@@ -1,0 +1,22 @@
+{
+  "name": "extjs-3.4",
+  "version": "1.0.0",
+  "main": "ext-all-debug-w-comments.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "terser-webpack-plugin": "^5.3.14",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1"
+  }
+}
