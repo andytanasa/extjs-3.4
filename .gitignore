@@ -13,6 +13,7 @@ yarn-error.log*
 package-lock.json
 pnpm-lock.yaml
 .idea
+a11y-reports
 
 # Webpack-related
 webpack-stats.json
