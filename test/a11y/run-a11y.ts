@@ -14,6 +14,8 @@ async function runAxeOnExample(pathToFile: string, outputFile: string) {
   // Run axe
   const results = await page.evaluate(() => {
     // @ts-ignore
+    window.axe.configure({ reporter: "no-passes" });
+    // @ts-ignore
     return window.axe.run();
   });
 
