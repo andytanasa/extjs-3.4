@@ -5,7 +5,7 @@
 Make the **ExtJS 3.4 components** compliant with **WCAG 2.2 AA accessibility standards**, using **axe-core** for automated testing and validation.
 
 You are to perform **minimal, functional changes only** to the ExtJS source code (e.g., components, templates, rendering logic) to eliminate
-accessibility violations.
+accessibility violations. Pay special attention to the source code of `onRender` method of components and any template variable values defined as they might contain html markup. 
 The examples in `examples/` are provided only as a rendering entry point and are not to be modified except for rendering verification purposes or to fix accessibility issues within the example code itself.
 Each example directory might contain multiple html files that showcase different functionality of the same component. Each of the html file is treated as a separate test axe reporter will run on.
 Component fixes should be limited only to the components and respective examples you were asked to fix. *DO NOT ATTEMPT* to fix everything in one go.
@@ -37,13 +37,15 @@ Component fixes should be limited only to the components and respective examples
 ## ✅ Scope of Fixes
 
 ### You Must Fix:
-
+- All WCAG 2.2 Level AA (Double-A) accessibility requirements.
 - Missing accessible names (`aria-label`, `aria-labelledby`, visible text)
+- Unnecessary markup
 - Misused semantic elements (e.g., `<i>` for spacing)
 - Improper roles or missing roles (`role="button"`, `role="presentation"`)
 - Screen reader traps or invisible focusable elements
 - Inputs missing labels
 - Improper keyboard navigation and focus handling
+- All other WCAG 2.2 requirements
 - Any other highlighted violations in the axe reports
 
 ### You Must NOT:
@@ -56,7 +58,13 @@ Component fixes should be limited only to the components and respective examples
 
 ## 🧪 Accessibility Test Workflow (axe-core)
 
-Script Invocation
+*First Step*
+
+First step is *always* a thorough inspection of the source code of the component for HTML markup. It could be in the onRender method or in any other template (*tpl) variables.
+You need to inspect the markup and evaluate its accessibility against the component name and description as defined in the JSDoc at the begging of the file.
+You need to attempt to fix any evident accessibility issues in the html markup -> then proceed to automated checks of violations.
+
+*Script Invocation*
 
 Use the following command to run accessibility checks on a specific example:
 
@@ -83,7 +91,7 @@ a11y-reports/button.html.json
 ## 📅 Workflow
 
 1. Given a component name or list of components, determine where is the source code responsible for them
-2. Inspect source code of the components and especially onRender. Look for html markup code and component templates. Inspect them for accessibility issues and attempt to fix them.
+2. Inspect source code of the components and especially onRender method. Look for html markup code and component templates. Inspect them for accessibility issues and attempt to fix them.
 3. Given a component name or list of components, determine which `examples/<component name/*.html` file(s) render those components.
 4. For each matched file:
    - Run `npm run axe -- <example subdirectory>/<example-filename.html>`
