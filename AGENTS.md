@@ -82,16 +82,18 @@ a11y-reports/button.html.json
 
 ## 📅 Workflow
 
-1. Given a component name or list of components, determine which `examples/<component name/*.html` file(s) render those components.
-2. For each matched file:
+1. Given a component name or list of components, determine where is the source code responsible for them
+2. Inspect source code of the components and especially onRender. Look for html markup code and component templates. Inspect them for accessibility issues and attempt to fix them.
+3. Given a component name or list of components, determine which `examples/<component name/*.html` file(s) render those components.
+4. For each matched file:
    - Run `npm run axe -- <example subdirectory>/<example-filename.html>`
    - Review the corresponding `a11y-reports/<example-filename>.json`
-3. If any violations are reported:
+5. If any violations are reported:
    - Locate and modify the responsible component inside the `src/` directory
    - Immediately run `npm run build` after modifying any files in `src/` to regenerate the bundled `ext-all-debug.js`
    - Re-run the axe test with `npm run axe` to confirm the fix
    - If the violations relate to any code that is located within the example directory, clearly say so and do not attempt to fix it in `src/` directory
-4. Repeat this cycle until axe reports **0 error violations** for the example
+6. Repeat this cycle until axe reports **0 error violations** for the example
 
 > ⚠️ Do not modify the `examples/` files unless absolutely necessary for rendering or testing purposes or for fixing the accessibility issues within example files themselves.
 
