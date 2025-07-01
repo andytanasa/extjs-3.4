@@ -60529,6 +60529,17 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
             this.internalDefaults = {hideOnClick: false};
         }
         Ext.menu.Menu.superclass.initComponent.call(this);
+        // Accessibility: label form fields before menu is shown
+        this.on('beforeshow', function(){
+            this.items.each(function(item){
+                if(item.isFormField && item.el){
+                    var inp = item.el.dom.getElementsByTagName('input')[0];
+                    if(inp && item.emptyText){
+                        inp.setAttribute('aria-label', item.emptyText);
+                    }
+                }
+            });
+        }, this);
         if(this.autoLayout){
             var fn = this.doLayout.createDelegate(this, []);
             this.on({
@@ -60577,6 +60588,18 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
         // generic focus element
         this.focusEl = this.el.child('a.x-menu-focus');
         this.ul = this.el.child('ul.x-menu-list');
+        // Accessibility: mark menu container and menu list
+        this.el.dom.setAttribute('role', 'presentation');
+        this.ul.dom.setAttribute('role', 'menu');
+        // Accessibility: add labels for any form fields in the menu
+        this.items.each(function(item){
+            if(item.isFormField && item.emptyText && item.el){
+                var inp = item.el.dom.getElementsByTagName('input')[0];
+                if(inp){
+                    inp.setAttribute('aria-label', item.emptyText);
+                }
+            }
+        }, this);
         this.mon(this.ul, {
             scope: this,
             click: this.onClick,
@@ -60792,7 +60815,7 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
         }else{
             max = this.getHeight();
         }
-        // Always respect maxHeight 
+        // Always respect maxHeight
         if (this.maxHeight){
             max = Math.min(this.maxHeight, max);
         }
@@ -60927,7 +60950,7 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
     // private
     getMenuItem : function(config) {
         config.ownerCt = this;
-        
+
         if (!config.isXType) {
             if (!config.xtype && Ext.isBoolean(config.checked)) {
                 return new Ext.menu.CheckItem(config);
@@ -61381,6 +61404,8 @@ Ext.menu.BaseItem = Ext.extend(Ext.Component, {
         if(this.ownerCt && this.ownerCt instanceof Ext.menu.Menu){
             this.parentMenu = this.ownerCt;
         }else{
+            // Accessibility: hide list-item wrapper
+            this.container.dom.setAttribute('role', 'presentation');
             this.container.addClass('x-menu-list-item');
             this.mon(this.el, {
                 scope: this,
@@ -61546,6 +61571,9 @@ Ext.menu.Separator = Ext.extend(Ext.menu.BaseItem, {
         s.className = this.itemCls;
         s.innerHTML = "&#160;";
         this.el = s;
+        // Accessibility: mark as menu separator
+        s.setAttribute('role', 'separator');
+        li.dom.setAttribute('role', 'presentation');
         li.addClass("x-menu-sep-li");
         Ext.menu.Separator.superclass.onRender.apply(this, arguments);
     }
@@ -61607,12 +61635,12 @@ Ext.menu.Item = Ext.extend(Ext.menu.BaseItem, {
      * @cfg {Number} showDelay Length of time in milliseconds to wait before showing this item (defaults to 200)
      */
     showDelay: 200,
-    
+
     /**
      * @cfg {String} altText The altText to use for the icon, if it exists. Defaults to <tt>''</tt>.
      */
     altText: '',
-    
+
     // doc'd in BaseItem
     hideDelay: 200,
 
@@ -61627,13 +61655,13 @@ Ext.menu.Item = Ext.extend(Ext.menu.BaseItem, {
             if (Ext.isArray(this.menu)){
                 this.menu = { items: this.menu };
             }
-            
+
             // An object config will work here, but an instance of a menu
             // will have already setup its ref's and have no effect
             if (Ext.isObject(this.menu)){
                 this.menu.ownerCt = this;
             }
-            
+
             this.menu = Ext.menu.MenuMgr.get(this.menu);
             this.menu.ownerCt = undefined;
         }
@@ -61643,7 +61671,10 @@ Ext.menu.Item = Ext.extend(Ext.menu.BaseItem, {
     onRender : function(container, position){
         if (!this.itemTpl) {
             this.itemTpl = Ext.menu.Item.prototype.itemTpl = new Ext.XTemplate(
-                '<a id="{id}" class="{cls}" hidefocus="true" unselectable="on" href="{href}"',
+                '<a id="{id}" class="{cls}" hidefocus="true" unselectable="on" href="{href}" role="menuitem"',
+                    '<tpl if="hrefTarget"> target="{hrefTarget}"</tpl>',
+                    '<tpl if="disabled"> aria-disabled="true"</tpl>',
+                    '<tpl if="menu"> aria-haspopup="true"</tpl>',
                     '<tpl if="hrefTarget">',
                         ' target="{hrefTarget}"',
                     '</tpl>',
@@ -61666,12 +61697,14 @@ Ext.menu.Item = Ext.extend(Ext.menu.BaseItem, {
     getTemplateArgs: function() {
         return {
             id: this.id,
-            cls: this.itemCls + (this.menu ?  ' x-menu-item-arrow' : '') + (this.cls ?  ' ' + this.cls : ''),
+            cls: this.itemCls + (this.menu ? ' x-menu-item-arrow' : '') + (this.cls ? ' ' + this.cls : ''),
             href: this.href || '#',
             hrefTarget: this.hrefTarget,
+            disabled: this.disabled,
+            menu: !!this.menu,
             icon: this.icon || Ext.BLANK_IMAGE_URL,
             iconCls: this.iconCls || '',
-            text: this.itemText||this.text||'&#160;',
+            text: this.itemText || this.text || '&#160;',
             altText: this.altText || ''
         };
     },
@@ -61789,6 +61822,7 @@ Ext.menu.Item = Ext.extend(Ext.menu.BaseItem, {
     }
 });
 Ext.reg('menuitem', Ext.menu.Item);
+
 /*!
  * Ext JS Library 3.4.0
  * Copyright(c) 2006-2011 Sencha Inc.

@@ -35,6 +35,9 @@ Ext.menu.Separator = Ext.extend(Ext.menu.BaseItem, {
         s.className = this.itemCls;
         s.innerHTML = "&#160;";
         this.el = s;
+        // Accessibility: mark as menu separator
+        s.setAttribute('role', 'separator');
+        li.dom.setAttribute('role', 'presentation');
         li.addClass("x-menu-sep-li");
         Ext.menu.Separator.superclass.onRender.apply(this, arguments);
     }

@@ -54,12 +54,12 @@ Ext.menu.Item = Ext.extend(Ext.menu.BaseItem, {
      * @cfg {Number} showDelay Length of time in milliseconds to wait before showing this item (defaults to 200)
      */
     showDelay: 200,
-    
+
     /**
      * @cfg {String} altText The altText to use for the icon, if it exists. Defaults to <tt>''</tt>.
      */
     altText: '',
-    
+
     // doc'd in BaseItem
     hideDelay: 200,
 
@@ -74,13 +74,13 @@ Ext.menu.Item = Ext.extend(Ext.menu.BaseItem, {
             if (Ext.isArray(this.menu)){
                 this.menu = { items: this.menu };
             }
-            
+
             // An object config will work here, but an instance of a menu
             // will have already setup its ref's and have no effect
             if (Ext.isObject(this.menu)){
                 this.menu.ownerCt = this;
             }
-            
+
             this.menu = Ext.menu.MenuMgr.get(this.menu);
             this.menu.ownerCt = undefined;
         }
@@ -90,7 +90,10 @@ Ext.menu.Item = Ext.extend(Ext.menu.BaseItem, {
     onRender : function(container, position){
         if (!this.itemTpl) {
             this.itemTpl = Ext.menu.Item.prototype.itemTpl = new Ext.XTemplate(
-                '<a id="{id}" class="{cls}" hidefocus="true" unselectable="on" href="{href}"',
+                '<a id="{id}" class="{cls}" hidefocus="true" unselectable="on" href="{href}" role="menuitem"',
+                    '<tpl if="hrefTarget"> target="{hrefTarget}"</tpl>',
+                    '<tpl if="disabled"> aria-disabled="true"</tpl>',
+                    '<tpl if="menu"> aria-haspopup="true"</tpl>',
                     '<tpl if="hrefTarget">',
                         ' target="{hrefTarget}"',
                     '</tpl>',
@@ -113,12 +116,14 @@ Ext.menu.Item = Ext.extend(Ext.menu.BaseItem, {
     getTemplateArgs: function() {
         return {
             id: this.id,
-            cls: this.itemCls + (this.menu ?  ' x-menu-item-arrow' : '') + (this.cls ?  ' ' + this.cls : ''),
+            cls: this.itemCls + (this.menu ? ' x-menu-item-arrow' : '') + (this.cls ? ' ' + this.cls : ''),
             href: this.href || '#',
             hrefTarget: this.hrefTarget,
+            disabled: this.disabled,
+            menu: !!this.menu,
             icon: this.icon || Ext.BLANK_IMAGE_URL,
             iconCls: this.iconCls || '',
-            text: this.itemText||this.text||'&#160;',
+            text: this.itemText || this.text || '&#160;',
             altText: this.altText || ''
         };
     },

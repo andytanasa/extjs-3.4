@@ -170,6 +170,17 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
             this.internalDefaults = {hideOnClick: false};
         }
         Ext.menu.Menu.superclass.initComponent.call(this);
+        // Accessibility: label form fields before menu is shown
+        this.on('beforeshow', function(){
+            this.items.each(function(item){
+                if(item.isFormField && item.el){
+                    var inp = item.el.dom.getElementsByTagName('input')[0];
+                    if(inp && item.emptyText){
+                        inp.setAttribute('aria-label', item.emptyText);
+                    }
+                }
+            });
+        }, this);
         if(this.autoLayout){
             var fn = this.doLayout.createDelegate(this, []);
             this.on({
@@ -218,6 +229,18 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
         // generic focus element
         this.focusEl = this.el.child('a.x-menu-focus');
         this.ul = this.el.child('ul.x-menu-list');
+        // Accessibility: mark menu container and menu list
+        this.el.dom.setAttribute('role', 'presentation');
+        this.ul.dom.setAttribute('role', 'menu');
+        // Accessibility: add labels for any form fields in the menu
+        this.items.each(function(item){
+            if(item.isFormField && item.emptyText && item.el){
+                var inp = item.el.dom.getElementsByTagName('input')[0];
+                if(inp){
+                    inp.setAttribute('aria-label', item.emptyText);
+                }
+            }
+        }, this);
         this.mon(this.ul, {
             scope: this,
             click: this.onClick,
@@ -433,7 +456,7 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
         }else{
             max = this.getHeight();
         }
-        // Always respect maxHeight 
+        // Always respect maxHeight
         if (this.maxHeight){
             max = Math.min(this.maxHeight, max);
         }
@@ -568,7 +591,7 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
     // private
     getMenuItem : function(config) {
         config.ownerCt = this;
-        
+
         if (!config.isXType) {
             if (!config.xtype && Ext.isBoolean(config.checked)) {
                 return new Ext.menu.CheckItem(config);

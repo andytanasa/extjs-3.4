@@ -89,6 +89,8 @@ Ext.menu.BaseItem = Ext.extend(Ext.Component, {
         if(this.ownerCt && this.ownerCt instanceof Ext.menu.Menu){
             this.parentMenu = this.ownerCt;
         }else{
+            // Accessibility: hide list-item wrapper
+            this.container.dom.setAttribute('role', 'presentation');
             this.container.addClass('x-menu-list-item');
             this.mon(this.el, {
                 scope: this,

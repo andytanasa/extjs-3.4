@@ -46,6 +46,7 @@ Ext.onReady(function(){
             overflow: 'visible'     // For the Combo popup
         },
         items: [
+            { xtype: 'menutextitem', text: '<label for="' + combo.getId() + '">Select a state:</label>' },
             combo,                  // A Field in a Menu
             {
                 text: 'I like Ext',
