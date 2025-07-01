@@ -270,8 +270,10 @@ Ext.layout.BoxLayout = Ext.extend(Ext.layout.ContainerLayout, {
     renderAll : function(ct, target) {
         if (!this.innerCt) {
             // the innerCt prevents wrapping and shuffling while the container is resizing
-            this.innerCt = target.createChild({cls:this.innerCls});
+            this.innerCt = target.createChild({cls: this.innerCls});
             this.padding = this.parseMargins(this.padding);
+            // Accessibility: mark as a group with orientation
+            this.innerCt.dom.setAttribute('role', 'group');
         }
         Ext.layout.BoxLayout.superclass.renderAll.call(this, ct, this.innerCt);
     },

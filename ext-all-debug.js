@@ -22255,11 +22255,12 @@ Ext.layout.ColumnLayout = Ext.extend(Ext.layout.ContainerLayout, {
     },
 
     renderAll : function(ct, target) {
-        if(!this.innerCt){
-            // the innerCt prevents wrapping and shuffling while
-            // the container is resizing
+        if (!this.innerCt) {
+            // the innerCt prevents wrapping and shuffling while the container is resizing
             this.innerCt = target.createChild({cls:'x-column-inner'});
             this.innerCt.createChild({cls:'x-clear'});
+            // Accessibility: mark as a group with horizontal orientation
+            this.innerCt.dom.setAttribute('role', 'group');
         }
         Ext.layout.ColumnLayout.superclass.renderAll.call(this, ct, this.innerCt);
     },
@@ -23970,6 +23971,22 @@ Ext.layout.AccordionLayout = Ext.extend(Ext.layout.FitLayout, {
         }
         Ext.layout.AccordionLayout.superclass.renderItem.apply(this, arguments);
         c.header.addClass('x-accordion-hd');
+        // Accessibility: make header a focusable button that controls panel body
+        if (!c.header.dom.id) {
+            c.header.dom.id = c.id + '-header';
+        }
+        c.header.dom.removeAttribute('aria-level');
+        c.header.dom.setAttribute('role', 'button');
+        c.header.dom.setAttribute('tabindex', '0');
+        if (c.body && c.body.dom) {
+            if (!c.body.dom.id) {
+                c.body.dom.id = c.id + '-body';
+            }
+            c.header.dom.setAttribute('aria-controls', c.body.dom.id);
+            c.header.dom.setAttribute('aria-expanded', (!c.collapsed).toString());
+            c.on('expand', function(){ c.header.dom.setAttribute('aria-expanded', 'true'); });
+            c.on('collapse', function(){ c.header.dom.setAttribute('aria-expanded', 'false'); });
+        }
         c.on('beforeexpand', this.beforeExpand, this);
     },
 
@@ -24158,14 +24175,16 @@ Ext.layout.TableLayout = Ext.extend(Ext.layout.ContainerLayout, {
         this.currentColumn = 0;
         this.cells = [];
     },
-    
+
     // private
     onLayout : function(ct, target){
         var cs = ct.items.items, len = cs.length, c, i;
 
         if(!this.table){
             target.addClass('x-table-layout-ct');
-
+            // Accessibility: hide layout table from assistive technologies
+            this.tableAttrs = this.tableAttrs ?? {};
+            this.tableAttrs.role = 'presentation';
             this.table = target.createChild(
                 Ext.apply({tag:'table', cls:'x-table-layout', cellspacing: 0, cn: {tag: 'tbody'}}, this.tableAttrs), null, true);
         }
@@ -24249,7 +24268,7 @@ Ext.layout.TableLayout = Ext.extend(Ext.layout.ContainerLayout, {
     isValidParent : function(c, target){
         return c.getPositionEl().up('table', 5).dom.parentNode === (target.dom || target);
     },
-    
+
     destroy: function(){
         delete this.table;
         Ext.layout.TableLayout.superclass.destroy.call(this);
@@ -24262,6 +24281,7 @@ Ext.layout.TableLayout = Ext.extend(Ext.layout.ContainerLayout, {
 });
 
 Ext.Container.LAYOUTS['table'] = Ext.layout.TableLayout;
+
 /*!
  * Ext JS Library 3.4.0
  * Copyright(c) 2006-2011 Sencha Inc.
@@ -24618,8 +24638,10 @@ Ext.layout.BoxLayout = Ext.extend(Ext.layout.ContainerLayout, {
     renderAll : function(ct, target) {
         if (!this.innerCt) {
             // the innerCt prevents wrapping and shuffling while the container is resizing
-            this.innerCt = target.createChild({cls:this.innerCls});
+            this.innerCt = target.createChild({cls: this.innerCls});
             this.padding = this.parseMargins(this.padding);
+            // Accessibility: mark as a group with orientation
+            this.innerCt.dom.setAttribute('role', 'group');
         }
         Ext.layout.BoxLayout.superclass.renderAll.call(this, ct, this.innerCt);
     },
@@ -27811,15 +27833,23 @@ new Ext.Panel({
         if(this.header){
             this.header.unselectable();
 
-            // for tools, we need to wrap any existing header markup
+            // for tools, wrap any existing header markup
             if(this.headerAsText){
                 this.header.dom.innerHTML =
-                    '<span class="' + this.headerTextCls + '">'+this.header.dom.innerHTML+'</span>';
+                    '<span class="' + this.headerTextCls + '">' + this.header.dom.innerHTML + '</span>';
 
                 if(this.iconCls){
                     this.setIconClass(this.iconCls);
                 }
             }
+
+            if (!this.header.dom.id) {
+                this.header.dom.id = this.id + '-header';
+            }
+            this.header.dom.setAttribute('role', 'heading');
+            this.header.dom.setAttribute('aria-level', '2');
+            this.el.dom.setAttribute('role', 'region');
+            this.el.dom.setAttribute('aria-labelledby', this.header.dom.id);
         }
 
         if(this.floating){
@@ -49972,10 +50002,10 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
             if(!Ext.Button.buttonTemplate){
                 // hideous table template
                 Ext.Button.buttonTemplate = new Ext.Template(
-                    '<table id="{4}" cellspacing="0" class="x-btn {3}"><tbody class="{1}">',
-                    '<tr><td class="x-btn-tl"><i>&#160;</i></td><td class="x-btn-tc"></td><td class="x-btn-tr"><i>&#160;</i></td></tr>',
-                    '<tr><td class="x-btn-ml"><i>&#160;</i></td><td class="x-btn-mc"><em class="{2}" unselectable="on"><button type="{0}"></button></em></td><td class="x-btn-mr"><i>&#160;</i></td></tr>',
-                    '<tr><td class="x-btn-bl"><i>&#160;</i></td><td class="x-btn-bc"></td><td class="x-btn-br"><i>&#160;</i></td></tr>',
+                    '<table id="{4}" cellspacing="0" class="x-btn {3}" role="presentation"><tbody class="{1}">',
+                    '<tr><td class="x-btn-tl"><i role="presentation" aria-hidden="true">&#160;</i></td><td class="x-btn-tc"></td><td class="x-btn-tr"><i role="presentation" aria-hidden="true">&#160;</i></td></tr>',
+                    '<tr><td class="x-btn-ml"><i role="presentation" aria-hidden="true">&#160;</i></td><td class="x-btn-mc"><em class="{2}" unselectable="on" role="presentation"><button type="{0}"></button></em></td><td class="x-btn-mr"><i role="presentation" aria-hidden="true">&#160;</i></td></tr>',
+                    '<tr><td class="x-btn-bl"><i role="presentation" aria-hidden="true">&#160;</i></td><td class="x-btn-bc"></td><td class="x-btn-br"><i role="presentation" aria-hidden="true">&#160;</i></td></tr>',
                     '</tbody></table>');
                 Ext.Button.buttonTemplate.compile();
             }
@@ -50016,8 +50046,16 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
         if(Ext.isDefined(this.tabIndex)){
             btnEl.dom.tabIndex = this.tabIndex;
         }
+        if(this.enableToggle){
+            btnEl.dom.setAttribute('aria-pressed', this.pressed);
+        }
         if(this.tooltip){
             this.setTooltip(this.tooltip, true);
+            if(Ext.isString(this.tooltip)){
+                btnEl.dom.setAttribute('aria-label', this.tooltip);
+            } else if(Ext.isObject(this.tooltip) && this.tooltip.text){
+                btnEl.dom.setAttribute('aria-label', this.tooltip.text);
+            }
         }
 
         if(this.handleMouseEvents){
@@ -50032,6 +50070,8 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
         }
 
         if(this.menu){
+            btnEl.dom.setAttribute('aria-haspopup', 'true');
+            btnEl.dom.setAttribute('aria-expanded', 'false');
             this.mon(this.menu, {
                 scope: this,
                 show: this.onMenuShow,
@@ -50208,9 +50248,10 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
     toggle : function(state, suppressEvent){
         state = state === undefined ? !this.pressed : !!state;
         if(state != this.pressed){
-            if(this.rendered){
-                this.el[state ? 'addClass' : 'removeClass']('x-btn-pressed');
-            }
+        if(this.rendered){
+            this.el[state ? 'addClass' : 'removeClass']('x-btn-pressed');
+            this.btnEl.dom.setAttribute('aria-pressed', state);
+        }
             this.pressed = state;
             if(!suppressEvent){
                 this.fireEvent('toggle', this, state);
@@ -50403,6 +50444,7 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
             this.menu.ownerCt = this;
             this.ignoreNextClick = 0;
             this.el.addClass('x-btn-menu-active');
+            this.btnEl.dom.setAttribute('aria-expanded', 'true');
             this.fireEvent('menushow', this, this.menu);
         }
     },
@@ -50410,6 +50452,7 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
     onMenuHide : function(e){
         if(this.menu.ownerCt == this){
             this.el.removeClass('x-btn-menu-active');
+            this.btnEl.dom.setAttribute('aria-expanded', 'false');
             this.ignoreNextClick = this.restoreClick.defer(250, this);
             this.fireEvent('menuhide', this, this.menu);
             delete this.menu.ownerCt;

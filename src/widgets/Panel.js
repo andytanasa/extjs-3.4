@@ -1010,15 +1010,23 @@ new Ext.Panel({
         if(this.header){
             this.header.unselectable();
 
-            // for tools, we need to wrap any existing header markup
+            // for tools, wrap any existing header markup
             if(this.headerAsText){
                 this.header.dom.innerHTML =
-                    '<span class="' + this.headerTextCls + '">'+this.header.dom.innerHTML+'</span>';
+                    '<span class="' + this.headerTextCls + '">' + this.header.dom.innerHTML + '</span>';
 
                 if(this.iconCls){
                     this.setIconClass(this.iconCls);
                 }
             }
+
+            if (!this.header.dom.id) {
+                this.header.dom.id = this.id + '-header';
+            }
+            this.header.dom.setAttribute('role', 'heading');
+            this.header.dom.setAttribute('aria-level', '2');
+            this.el.dom.setAttribute('role', 'region');
+            this.el.dom.setAttribute('aria-labelledby', this.header.dom.id);
         }
 
         if(this.floating){

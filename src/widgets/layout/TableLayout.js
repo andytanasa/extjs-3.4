@@ -104,14 +104,16 @@ Ext.layout.TableLayout = Ext.extend(Ext.layout.ContainerLayout, {
         this.currentColumn = 0;
         this.cells = [];
     },
-    
+
     // private
     onLayout : function(ct, target){
         var cs = ct.items.items, len = cs.length, c, i;
 
         if(!this.table){
             target.addClass('x-table-layout-ct');
-
+            // Accessibility: hide layout table from assistive technologies
+            this.tableAttrs = this.tableAttrs ?? {};
+            this.tableAttrs.role = 'presentation';
             this.table = target.createChild(
                 Ext.apply({tag:'table', cls:'x-table-layout', cellspacing: 0, cn: {tag: 'tbody'}}, this.tableAttrs), null, true);
         }
@@ -195,7 +197,7 @@ Ext.layout.TableLayout = Ext.extend(Ext.layout.ContainerLayout, {
     isValidParent : function(c, target){
         return c.getPositionEl().up('table', 5).dom.parentNode === (target.dom || target);
     },
-    
+
     destroy: function(){
         delete this.table;
         Ext.layout.TableLayout.superclass.destroy.call(this);

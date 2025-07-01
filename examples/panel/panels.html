@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Panel</title>
@@ -28,20 +28,21 @@
     </style>
 </head>
 <body>
-<script type="text/javascript" src="../shared/examples.js"></script><!-- EXAMPLES -->
-<h1>Ext.Panel</h1>
-<p>The js is not minified so it is readable. See <a href="panels.js">panels.js</a>.</p>
+<div id="docbody" role="main">
+    <script type="text/javascript" src="../shared/examples.js"></script><!-- EXAMPLES -->
+    <h1>Ext.Panel</h1>
+    <p>The js is not minified so it is readable. See <a href="panels.js">panels.js</a>.</p>
 
-<div id="panel-basic" class="container">
+    <div id="panel-basic" class="container">
+    </div>
+
+    <div id="panel-reset-true" class="container">
+        <p>Setting the Ext.Panel configuration-option <em class="cfg">preventBodyReset: true</em> will ensure your Panel <b>body</b>'s structural html is isolated from the Ext theme.</p>
+    </div>
+
+    <div id="panel-reset-false" class="container">
+        <p>Compare the same panel rendered with <em class="cfg">preventBodyReset: false</em></p>
+    </div>
 </div>
-
-<div id="panel-reset-true" class="container">
-	<p>Setting the Ext.Panel configuration-option <em class="cfg">preventBodyReset: true</em> will ensure your Panel <b>body</b>'s structural html is isolated from the Ext theme.</p>
-</div>
-
-<div id="panel-reset-false" class="container">
-	<p>Compare the same panel rendered with <em class="cfg">preventBodyReset: false</em></p>
-</div>
-
 </body>
 </html>

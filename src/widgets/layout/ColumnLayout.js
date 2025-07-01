@@ -99,11 +99,12 @@ Ext.layout.ColumnLayout = Ext.extend(Ext.layout.ContainerLayout, {
     },
 
     renderAll : function(ct, target) {
-        if(!this.innerCt){
-            // the innerCt prevents wrapping and shuffling while
-            // the container is resizing
+        if (!this.innerCt) {
+            // the innerCt prevents wrapping and shuffling while the container is resizing
             this.innerCt = target.createChild({cls:'x-column-inner'});
             this.innerCt.createChild({cls:'x-clear'});
+            // Accessibility: mark as a group with horizontal orientation
+            this.innerCt.dom.setAttribute('role', 'group');
         }
         Ext.layout.ColumnLayout.superclass.renderAll.call(this, ct, this.innerCt);
     },

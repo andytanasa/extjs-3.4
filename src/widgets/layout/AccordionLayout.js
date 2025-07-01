@@ -118,6 +118,22 @@ Ext.layout.AccordionLayout = Ext.extend(Ext.layout.FitLayout, {
         }
         Ext.layout.AccordionLayout.superclass.renderItem.apply(this, arguments);
         c.header.addClass('x-accordion-hd');
+        // Accessibility: make header a focusable button that controls panel body
+        if (!c.header.dom.id) {
+            c.header.dom.id = c.id + '-header';
+        }
+        c.header.dom.removeAttribute('aria-level');
+        c.header.dom.setAttribute('role', 'button');
+        c.header.dom.setAttribute('tabindex', '0');
+        if (c.body && c.body.dom) {
+            if (!c.body.dom.id) {
+                c.body.dom.id = c.id + '-body';
+            }
+            c.header.dom.setAttribute('aria-controls', c.body.dom.id);
+            c.header.dom.setAttribute('aria-expanded', (!c.collapsed).toString());
+            c.on('expand', function(){ c.header.dom.setAttribute('aria-expanded', 'true'); });
+            c.on('collapse', function(){ c.header.dom.setAttribute('aria-expanded', 'false'); });
+        }
         c.on('beforeexpand', this.beforeExpand, this);
     },
 

@@ -320,10 +320,10 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
             if(!Ext.Button.buttonTemplate){
                 // hideous table template
                 Ext.Button.buttonTemplate = new Ext.Template(
-                    '<table id="{4}" cellspacing="0" class="x-btn {3}"><tbody class="{1}">',
-                    '<tr><td class="x-btn-tl"><i>&#160;</i></td><td class="x-btn-tc"></td><td class="x-btn-tr"><i>&#160;</i></td></tr>',
-                    '<tr><td class="x-btn-ml"><i>&#160;</i></td><td class="x-btn-mc"><em class="{2}" unselectable="on"><button type="{0}"></button></em></td><td class="x-btn-mr"><i>&#160;</i></td></tr>',
-                    '<tr><td class="x-btn-bl"><i>&#160;</i></td><td class="x-btn-bc"></td><td class="x-btn-br"><i>&#160;</i></td></tr>',
+                    '<table id="{4}" cellspacing="0" class="x-btn {3}" role="presentation"><tbody class="{1}">',
+                    '<tr><td class="x-btn-tl"><i role="presentation" aria-hidden="true">&#160;</i></td><td class="x-btn-tc"></td><td class="x-btn-tr"><i role="presentation" aria-hidden="true">&#160;</i></td></tr>',
+                    '<tr><td class="x-btn-ml"><i role="presentation" aria-hidden="true">&#160;</i></td><td class="x-btn-mc"><em class="{2}" unselectable="on" role="presentation"><button type="{0}"></button></em></td><td class="x-btn-mr"><i role="presentation" aria-hidden="true">&#160;</i></td></tr>',
+                    '<tr><td class="x-btn-bl"><i role="presentation" aria-hidden="true">&#160;</i></td><td class="x-btn-bc"></td><td class="x-btn-br"><i role="presentation" aria-hidden="true">&#160;</i></td></tr>',
                     '</tbody></table>');
                 Ext.Button.buttonTemplate.compile();
             }
@@ -364,8 +364,16 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
         if(Ext.isDefined(this.tabIndex)){
             btnEl.dom.tabIndex = this.tabIndex;
         }
+        if(this.enableToggle){
+            btnEl.dom.setAttribute('aria-pressed', this.pressed);
+        }
         if(this.tooltip){
             this.setTooltip(this.tooltip, true);
+            if(Ext.isString(this.tooltip)){
+                btnEl.dom.setAttribute('aria-label', this.tooltip);
+            } else if(Ext.isObject(this.tooltip) && this.tooltip.text){
+                btnEl.dom.setAttribute('aria-label', this.tooltip.text);
+            }
         }
 
         if(this.handleMouseEvents){
@@ -380,6 +388,8 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
         }
 
         if(this.menu){
+            btnEl.dom.setAttribute('aria-haspopup', 'true');
+            btnEl.dom.setAttribute('aria-expanded', 'false');
             this.mon(this.menu, {
                 scope: this,
                 show: this.onMenuShow,
@@ -556,9 +566,10 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
     toggle : function(state, suppressEvent){
         state = state === undefined ? !this.pressed : !!state;
         if(state != this.pressed){
-            if(this.rendered){
-                this.el[state ? 'addClass' : 'removeClass']('x-btn-pressed');
-            }
+        if(this.rendered){
+            this.el[state ? 'addClass' : 'removeClass']('x-btn-pressed');
+            this.btnEl.dom.setAttribute('aria-pressed', state);
+        }
             this.pressed = state;
             if(!suppressEvent){
                 this.fireEvent('toggle', this, state);
@@ -751,6 +762,7 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
             this.menu.ownerCt = this;
             this.ignoreNextClick = 0;
             this.el.addClass('x-btn-menu-active');
+            this.btnEl.dom.setAttribute('aria-expanded', 'true');
             this.fireEvent('menushow', this, this.menu);
         }
     },
@@ -758,6 +770,7 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
     onMenuHide : function(e){
         if(this.menu.ownerCt == this){
             this.el.removeClass('x-btn-menu-active');
+            this.btnEl.dom.setAttribute('aria-expanded', 'false');
             this.ignoreNextClick = this.restoreClick.defer(250, this);
             this.fireEvent('menuhide', this, this.menu);
             delete this.menu.ownerCt;
