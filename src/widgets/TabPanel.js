@@ -319,7 +319,7 @@ var tabs = new Ext.TabPanel({
         var st = this[this.stripTarget];
 
         this.stripWrap = st.createChild({cls:'x-tab-strip-wrap', cn:{
-            tag:'ul', cls:'x-tab-strip x-tab-strip-'+this.tabPosition}});
+            tag:'ul', role:'tablist', cls:'x-tab-strip x-tab-strip-'+this.tabPosition}});
 
         var beforeEl = (this.tabPosition=='bottom' ? this.stripWrap : null);
         st.createChild({cls:'x-tab-strip-spacer'}, beforeEl);
@@ -396,7 +396,7 @@ new Ext.TabPanel({
         if(!this.itemTpl){
             var tt = new Ext.Template(
                  '<li class="{cls}" id="{id}"><a class="x-tab-strip-close"></a>',
-                 '<a class="x-tab-right" href="#"><em class="x-tab-left">',
+                 '<a class="x-tab-right" href="#" role="tab" tabIndex="0" aria-controls="{panelId}" aria-selected="false"><em class="x-tab-left">',
                  '<span class="x-tab-strip-inner"><span class="x-tab-strip-text {iconCls}">{text}</span></span>',
                  '</em></a></li>'
             );
@@ -432,6 +432,15 @@ new Ext.TabPanel({
         if(this.enableTabScroll){
             this.mon(this.strip, 'mousewheel', this.onWheel, this);
         }
+        this.keyNav = new Ext.KeyNav(this.strip, {
+            scope: this,
+            left: this.focusPrevTab,
+            right: this.focusNextTab,
+            home: this.focusFirstTab,
+            end: this.focusLastTab,
+            enter: this.activateFocusedTab,
+            space: this.activateFocusedTab
+        });
     },
 
     // private
@@ -530,6 +539,13 @@ new Ext.TabPanel({
         }
         item.tabEl = el;
 
+        var a = tabEl.child('a.x-tab-right', true);
+        if (a) {
+            a.setAttribute('tabIndex', '0');
+            a.setAttribute('aria-controls', item.id);
+            a.setAttribute('aria-selected', item == this.activeTab);
+        }
+
         // Route *keyboard triggered* click events to the tab strip mouse handler.
         tabEl.select('a').on('click', function(e){
             if(!e.getPageX()){
@@ -578,7 +594,8 @@ new Ext.TabPanel({
             id: this.id + this.idDelimiter + item.getItemId(),
             text: item.title,
             cls: cls,
-            iconCls: item.iconCls || ''
+            iconCls: item.iconCls || '',
+            panelId: item.id
         };
     },
 
@@ -813,12 +830,15 @@ new Ext.TabPanel({
                 var oldEl = this.getTabEl(this.activeTab);
                 if(oldEl){
                     Ext.fly(oldEl).removeClass('x-tab-strip-active');
+                    Ext.fly(oldEl).child('a.x-tab-right').dom.setAttribute('aria-selected', 'false');
                 }
             }
             this.activeTab = item;
             if(item){
                 var el = this.getTabEl(item);
                 Ext.fly(el).addClass('x-tab-strip-active');
+                Ext.fly(el).child('a.x-tab-right').dom.setAttribute('aria-selected', 'true');
+                this.focusedTab = item;
                 this.stack.add(item);
 
                 this.layout.setActiveItem(item);
@@ -1035,6 +1055,70 @@ new Ext.TabPanel({
         var pos = this.getScrollPos();
         this.scrollLeft[pos === 0 ? 'addClass' : 'removeClass']('x-tab-scroller-left-disabled');
         this.scrollRight[pos >= (this.getScrollWidth()-this.getScrollArea()) ? 'addClass' : 'removeClass']('x-tab-scroller-right-disabled');
+    },
+
+    // private
+    findNextTab : function(start, step){
+        var items = this.items.items,
+            len = items.length,
+            idx = start ? this.items.indexOf(start) : (step > 0 ? -1 : len),
+            i, item;
+        for(i = 0; i < len; ++i){
+            idx = (idx + step + len) % len;
+            item = items[idx];
+            if(!item.disabled && !item.hidden){
+                return item;
+            }
+        }
+        return null;
+    },
+
+    // private
+    focusTab : function(item){
+        var el = Ext.get(item.tabEl).child('a.x-tab-right', true);
+        if(el){
+            el.focus();
+        }
+        this.focusedTab = item;
+    },
+
+    // private
+    focusPrevTab : function(){
+        var item = this.findNextTab(this.focusedTab || this.activeTab, -1);
+        if(item){
+            this.focusTab(item);
+        }
+    },
+
+    // private
+    focusNextTab : function(){
+        var item = this.findNextTab(this.focusedTab || this.activeTab, 1);
+        if(item){
+            this.focusTab(item);
+        }
+    },
+
+    // private
+    focusFirstTab : function(){
+        var item = this.findNextTab(null, 1);
+        if(item){
+            this.focusTab(item);
+        }
+    },
+
+    // private
+    focusLastTab : function(){
+        var item = this.findNextTab(null, -1);
+        if(item){
+            this.focusTab(item);
+        }
+    },
+
+    // private
+    activateFocusedTab : function(){
+        if(this.focusedTab){
+            this.setActiveTab(this.focusedTab);
+        }
     },
 
     // private
