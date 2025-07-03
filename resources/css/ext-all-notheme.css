@@ -5324,3 +5324,8 @@ body.ext-ie6.x-body-masked .x-window select {
 .ext-gecko2 .ext-mb-fix-cursor {
     overflow:auto;
 }
+
+/* visible focus indicator */
+*:focus {
+    outline: 1px dotted #000 !important;
+}
