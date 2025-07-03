@@ -172,6 +172,12 @@ Ext.extend(T, Ext.Container, {
         }
     },
 
+    // private
+    afterRender : function(){
+        Ext.Toolbar.superclass.afterRender.apply(this, arguments);
+        this.initKeyNav();
+    },
+
     /**
      * <p>Adds element(s) to the toolbar -- this function takes a variable number of
      * arguments of mixed type and adds them to the toolbar.</p>
@@ -417,6 +423,68 @@ Ext.extend(T, Ext.Container, {
     // private
     onButtonMenuHide : function(btn){
         delete this.activeMenuBtn;
+    },
+
+    // private
+    initKeyNav : function(){
+        var items = [];
+        this.items.each(function(it){
+            var el = it.btnEl || (it.getActionEl ? it.getActionEl() : it.el);
+            if (el && typeof it.focus == 'function' && it.focus !== Ext.emptyFn) {
+                el.dom.tabIndex = -1;
+                el.on('focus', function(){
+                    this.setActiveIndex(this.findFocusableIndex(el));
+                }, this);
+                items.push(el);
+            }
+        }, this);
+        this.focusableEls = items;
+        this.activeIndex = 0;
+        if(items.length){
+            items[0].dom.tabIndex = 0;
+        }
+        this.keyNav = new Ext.KeyNav(this.el, {
+            scope: this,
+            left: function(){ this.moveFocus(-1); },
+            right: function(){ this.moveFocus(1); }
+        });
+    },
+
+    // private
+    findFocusableIndex : function(el){
+        for(var i=0;i<this.focusableEls.length;i++){
+            if(this.focusableEls[i] === el){
+                return i;
+            }
+        }
+        return -1;
+    },
+
+    // private
+    setActiveIndex : function(idx){
+        if(typeof idx != 'number' || idx < 0 || idx >= this.focusableEls.length){
+            return;
+        }
+        var old = this.focusableEls[this.activeIndex];
+        if(old){
+            old.dom.tabIndex = -1;
+        }
+        this.activeIndex = idx;
+        var el = this.focusableEls[idx];
+        if(el){
+            el.dom.tabIndex = 0;
+        }
+    },
+
+    // private
+    moveFocus : function(dir){
+        if(!this.focusableEls || !this.focusableEls.length){
+            return;
+        }
+        var idx = this.activeIndex || 0;
+        idx = (idx + dir + this.focusableEls.length) % this.focusableEls.length;
+        this.setActiveIndex(idx);
+        this.focusableEls[idx].focus();
     }
 });
 Ext.reg('toolbar', Ext.Toolbar);
