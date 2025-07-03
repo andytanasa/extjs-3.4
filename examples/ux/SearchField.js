@@ -25,6 +25,13 @@ Ext.ux.form.SearchField = Ext.extend(Ext.form.TwinTriggerField, {
     hasSearch : false,
     paramName : 'query',
 
+    afterRender : function(){
+        Ext.ux.form.SearchField.superclass.afterRender.call(this);
+        if (this.id) {
+            this.el.dom.setAttribute('aria-labelledby', this.id);
+        }
+    },
+
     onTrigger1Click : function(){
         if(this.hasSearch){
             this.el.dom.value = '';
