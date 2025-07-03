@@ -113,17 +113,37 @@ cp.colors = ['000000', '993300', '333300'];
     onRender : function(container, position){
         this.autoEl = {
             tag: 'div',
-            cls: this.itemCls
+            cls: this.itemCls,
+            tabIndex: 0,
+            role: 'listbox'
         };
         Ext.ColorPalette.superclass.onRender.call(this, container, position);
         var t = this.tpl || new Ext.XTemplate(
             '<tpl for="."><a href="#" class="color-{.}" hidefocus="on"><em><span style="background:#{.}" unselectable="on">&#160;</span></em></a></tpl>'
         );
         t.overwrite(this.el, this.colors);
+        this.colorEls = this.el.select('a');
+        this.colorEls.each(function(a, all, i){
+            a.dom.tabIndex = -1;
+            a.dom.id = this.id + '-color-' + i;
+        }, this);
         this.mon(this.el, this.clickEvent, this.handleClick, this, {delegate: 'a'});
         if(this.clickEvent != 'click'){
-        	this.mon(this.el, 'click', Ext.emptyFn, this, {delegate: 'a', preventDefault: true});
+                this.mon(this.el, 'click', Ext.emptyFn, this, {delegate: 'a', preventDefault: true});
         }
+        this.mon(this.el, 'focus', function(){
+            var idx = this.value ? this.colors.indexOf(this.value) : 0;
+            this.focusItem(idx);
+        }, this);
+        this.keyNav = new Ext.KeyNav(this.el, {
+            scope: this,
+            left: this.focusPrev,
+            right: this.focusNext,
+            up: this.focusPrev,
+            down: this.focusNext,
+            space: this.selectFocused,
+            enter: this.selectFocused
+        });
     },
 
     // private
@@ -157,11 +177,49 @@ cp.colors = ['000000', '993300', '333300'];
             if(this.value){
                 el.child('a.color-'+this.value).removeClass('x-color-palette-sel');
             }
-            el.child('a.color-'+color).addClass('x-color-palette-sel');
+            var a = el.child('a.color-'+color);
+            a.addClass('x-color-palette-sel');
             this.value = color;
+            if(a){
+                this.el.dom.setAttribute('aria-activedescendant', a.dom.id);
+                this.focusIndex = this.colorEls.indexOf(a.dom);
+            }
             if(suppressEvent !== true){
                 this.fireEvent('select', this, color);
             }
+        }
+    },
+
+    focusItem : function(idx){
+        var el = this.colorEls.item(idx);
+        if(el){
+            el.dom.focus();
+            this.el.dom.setAttribute('aria-activedescendant', el.dom.id);
+            this.focusIndex = idx;
+        }
+    },
+
+    moveFocus : function(step){
+        if(!this.colorEls){
+            return;
+        }
+        var count = this.colorEls.getCount();
+        var idx = (this.focusIndex + step + count) % count;
+        this.focusItem(idx);
+    },
+
+    focusPrev : function(){
+        this.moveFocus(-1);
+    },
+
+    focusNext : function(){
+        this.moveFocus(1);
+    },
+
+    selectFocused : function(e){
+        e.preventDefault();
+        if(this.focusIndex >= 0){
+            this.select(this.colors[this.focusIndex]);
         }
     }
 
