@@ -48,8 +48,9 @@ Ext.onReady(function(){
         }),
 
         tbar: [
-            'Search: ', ' ',
+            '<label for="search-field">Search:</label>', ' ',
             new Ext.ux.form.SearchField({
+                id: 'search-field',
                 store: ds,
                 width:320
             })
