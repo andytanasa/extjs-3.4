@@ -1,0 +1,1964 @@
+{
+  "testEngine": {
+    "name": "axe-core",
+    "version": "4.10.3"
+  },
+  "testRunner": {
+    "name": "axe"
+  },
+  "testEnvironment": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/138.0.7204.23 Safari/537.36",
+    "windowWidth": 1280,
+    "windowHeight": 720,
+    "orientationAngle": 0,
+    "orientationType": "landscape-primary"
+  },
+  "timestamp": "2025-07-10T06:44:12.817Z",
+  "url": "file:///C:/Endava/EndevLocal/Ext.js.3.4/extjs-3.4/examples/calendar/index.html",
+  "toolOptions": {
+    "runOnly": {
+      "type": "tag",
+      "values": [
+        "wcag22aa",
+        "wcag21aa"
+      ]
+    },
+    "resultTypes": [
+      "violations"
+    ],
+    "exclude": [
+      "body > h1",
+      "body > h2",
+      "body > h3",
+      "body > p"
+    ],
+    "reporter": "v2"
+  },
+  "inapplicable": [
+    {
+      "id": "autocomplete-valid",
+      "impact": null,
+      "tags": [
+        "cat.forms",
+        "wcag21aa",
+        "wcag135",
+        "EN-301-549",
+        "EN-9.1.3.5",
+        "ACT"
+      ],
+      "description": "Ensure the autocomplete attribute is correct and suitable for the form field",
+      "help": "autocomplete attribute must be used correctly",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/autocomplete-valid?application=axe-playwright-report",
+      "nodes": []
+    }
+  ],
+  "passes": [
+    {
+      "id": "avoid-inline-spacing",
+      "impact": null,
+      "tags": [
+        "cat.structure",
+        "wcag21aa",
+        "wcag1412",
+        "EN-301-549",
+        "EN-9.1.4.12",
+        "ACT"
+      ],
+      "description": "Ensure that text spacing set through style attributes can be adjusted with custom stylesheets",
+      "help": "Inline text spacing must be adjustable with custom stylesheets",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/avoid-inline-spacing?application=axe-playwright-report",
+      "nodes": [
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "important-letter-spacing",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Letter-spacing in the style attribute is not set to !important, or meets the minimum"
+            },
+            {
+              "id": "important-word-spacing",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "word-spacing in the style attribute is not set to !important, or meets the minimum"
+            },
+            {
+              "id": "important-line-height",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "line-height in the style attribute is not set to !important, or meets the minimum"
+            }
+          ],
+          "none": [],
+          "impact": null,
+          "html": "<div id=\"app-header\" class=\" x-panel x-panel-noborder x-border-panel\" style=\"left: 0px; top: 0px; width: 1280px;\">",
+          "target": [
+            "#app-header"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "target-size",
+      "impact": "serious",
+      "tags": [
+        "cat.sensory-and-visual-cues",
+        "wcag22aa",
+        "wcag258"
+      ],
+      "description": "Ensure touch targets have sufficient size and space",
+      "help": "All touch targets must be 24px large, or leave sufficient space",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/target-size?application=axe-playwright-report",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 24,
+                "minOffset": 24
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has sufficient space from its closest neighbors. Safe clickable space has a diameter of 24px which is at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<a href=\"#\" title=\"Previous Month (Control+Left)\" id=\"ext-gen21\" class=\" x-unselectable\">&nbsp;</a>",
+          "target": [
+            "#ext-gen21"
+          ]
+        }
+      ]
+    }
+  ],
+  "incomplete": [],
+  "violations": [
+    {
+      "id": "target-size",
+      "impact": "serious",
+      "tags": [
+        "cat.sensory-and-visual-cues",
+        "wcag22aa",
+        "wcag258"
+      ],
+      "description": "Ensure touch targets have sufficient size and space",
+      "help": "All touch targets must be 24px large, or leave sufficient space",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/target-size?application=axe-playwright-report",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>6</span></em></a>",
+                  "target": [
+                    "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(1) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>29</span></em></a>",
+          "target": [
+            ".x-date-prevday[title=\"\"]:nth-child(1) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>7</span></em></a>",
+                  "target": [
+                    "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(2) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>30</span></em></a>",
+          "target": [
+            ".x-date-prevday[title=\"\"]:nth-child(2) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>8</span></em></a>",
+                  "target": [
+                    "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(3) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>1</span></em></a>",
+          "target": [
+            "tr:nth-child(1) > .x-date-active[title=\"\"]:nth-child(3) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>9</span></em></a>",
+                  "target": [
+                    "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(4) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>2</span></em></a>",
+          "target": [
+            "tr:nth-child(1) > .x-date-active[title=\"\"]:nth-child(4) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>10</span></em></a>",
+                  "target": [
+                    ".x-date-today > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>3</span></em></a>",
+          "target": [
+            "tr:nth-child(1) > .x-date-active[title=\"\"]:nth-child(5) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>11</span></em></a>",
+                  "target": [
+                    "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(6) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>4</span></em></a>",
+          "target": [
+            "tr:nth-child(1) > .x-date-active[title=\"\"]:nth-child(6) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>12</span></em></a>",
+                  "target": [
+                    "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(7) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>5</span></em></a>",
+          "target": [
+            "tr:nth-child(1) > .x-date-active[title=\"\"]:nth-child(7) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>29</span></em></a>",
+                  "target": [
+                    ".x-date-prevday[title=\"\"]:nth-child(1) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>13</span></em></a>",
+                  "target": [
+                    "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(1) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>6</span></em></a>",
+          "target": [
+            "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(1) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>30</span></em></a>",
+                  "target": [
+                    ".x-date-prevday[title=\"\"]:nth-child(2) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>14</span></em></a>",
+                  "target": [
+                    "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(2) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>7</span></em></a>",
+          "target": [
+            "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(2) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>1</span></em></a>",
+                  "target": [
+                    "tr:nth-child(1) > .x-date-active[title=\"\"]:nth-child(3) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>15</span></em></a>",
+                  "target": [
+                    "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(3) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>8</span></em></a>",
+          "target": [
+            "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(3) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>2</span></em></a>",
+                  "target": [
+                    "tr:nth-child(1) > .x-date-active[title=\"\"]:nth-child(4) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>16</span></em></a>",
+                  "target": [
+                    "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(4) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>9</span></em></a>",
+          "target": [
+            "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(4) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>3</span></em></a>",
+                  "target": [
+                    "tr:nth-child(1) > .x-date-active[title=\"\"]:nth-child(5) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>17</span></em></a>",
+                  "target": [
+                    "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(5) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>10</span></em></a>",
+          "target": [
+            ".x-date-today > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>4</span></em></a>",
+                  "target": [
+                    "tr:nth-child(1) > .x-date-active[title=\"\"]:nth-child(6) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>18</span></em></a>",
+                  "target": [
+                    "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(6) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>11</span></em></a>",
+          "target": [
+            "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(6) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>5</span></em></a>",
+                  "target": [
+                    "tr:nth-child(1) > .x-date-active[title=\"\"]:nth-child(7) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>19</span></em></a>",
+                  "target": [
+                    "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(7) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>12</span></em></a>",
+          "target": [
+            "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(7) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>6</span></em></a>",
+                  "target": [
+                    "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(1) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>20</span></em></a>",
+                  "target": [
+                    "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(1) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>13</span></em></a>",
+          "target": [
+            "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(1) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>7</span></em></a>",
+                  "target": [
+                    "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(2) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>21</span></em></a>",
+                  "target": [
+                    "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(2) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>14</span></em></a>",
+          "target": [
+            "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(2) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>8</span></em></a>",
+                  "target": [
+                    "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(3) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>22</span></em></a>",
+                  "target": [
+                    "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(3) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>15</span></em></a>",
+          "target": [
+            "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(3) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>9</span></em></a>",
+                  "target": [
+                    "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(4) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>23</span></em></a>",
+                  "target": [
+                    "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(4) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>16</span></em></a>",
+          "target": [
+            "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(4) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>10</span></em></a>",
+                  "target": [
+                    ".x-date-today > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>24</span></em></a>",
+                  "target": [
+                    "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(5) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>17</span></em></a>",
+          "target": [
+            "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(5) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>11</span></em></a>",
+                  "target": [
+                    "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(6) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>25</span></em></a>",
+                  "target": [
+                    "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(6) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>18</span></em></a>",
+          "target": [
+            "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(6) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>12</span></em></a>",
+                  "target": [
+                    "tr:nth-child(2) > .x-date-active[title=\"\"]:nth-child(7) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>26</span></em></a>",
+                  "target": [
+                    "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(7) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>19</span></em></a>",
+          "target": [
+            "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(7) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>13</span></em></a>",
+                  "target": [
+                    "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(1) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>27</span></em></a>",
+                  "target": [
+                    "tr:nth-child(5) > .x-date-active[title=\"\"]:nth-child(1) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>20</span></em></a>",
+          "target": [
+            "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(1) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>14</span></em></a>",
+                  "target": [
+                    "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(2) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>28</span></em></a>",
+                  "target": [
+                    "tr:nth-child(5) > .x-date-active[title=\"\"]:nth-child(2) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>21</span></em></a>",
+          "target": [
+            "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(2) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>15</span></em></a>",
+                  "target": [
+                    "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(3) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>29</span></em></a>",
+                  "target": [
+                    "tr:nth-child(5) > .x-date-active[title=\"\"]:nth-child(3) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>22</span></em></a>",
+          "target": [
+            "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(3) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>16</span></em></a>",
+                  "target": [
+                    "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(4) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>30</span></em></a>",
+                  "target": [
+                    "tr:nth-child(5) > .x-date-active[title=\"\"]:nth-child(4) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>23</span></em></a>",
+          "target": [
+            "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(4) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>17</span></em></a>",
+                  "target": [
+                    "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(5) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>31</span></em></a>",
+                  "target": [
+                    "tr:nth-child(5) > .x-date-active[title=\"\"]:nth-child(5) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>24</span></em></a>",
+          "target": [
+            "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(5) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>18</span></em></a>",
+                  "target": [
+                    "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(6) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>1</span></em></a>",
+                  "target": [
+                    "tr:nth-child(5) > .x-date-nextday[title=\"\"]:nth-child(6) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>25</span></em></a>",
+          "target": [
+            "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(6) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>19</span></em></a>",
+                  "target": [
+                    "tr:nth-child(3) > .x-date-active[title=\"\"]:nth-child(7) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>2</span></em></a>",
+                  "target": [
+                    "tr:nth-child(5) > .x-date-nextday[title=\"\"]:nth-child(7) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>26</span></em></a>",
+          "target": [
+            "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(7) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>20</span></em></a>",
+                  "target": [
+                    "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(1) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>3</span></em></a>",
+                  "target": [
+                    ".x-date-nextday[title=\"\"]:nth-child(1) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>27</span></em></a>",
+          "target": [
+            "tr:nth-child(5) > .x-date-active[title=\"\"]:nth-child(1) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>21</span></em></a>",
+                  "target": [
+                    "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(2) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>4</span></em></a>",
+                  "target": [
+                    ".x-date-nextday[title=\"\"]:nth-child(2) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>28</span></em></a>",
+          "target": [
+            "tr:nth-child(5) > .x-date-active[title=\"\"]:nth-child(2) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>22</span></em></a>",
+                  "target": [
+                    "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(3) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>5</span></em></a>",
+                  "target": [
+                    ".x-date-nextday[title=\"\"]:nth-child(3) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>29</span></em></a>",
+          "target": [
+            "tr:nth-child(5) > .x-date-active[title=\"\"]:nth-child(3) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>23</span></em></a>",
+                  "target": [
+                    "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(4) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>6</span></em></a>",
+                  "target": [
+                    ".x-date-nextday[title=\"\"]:nth-child(4) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>30</span></em></a>",
+          "target": [
+            "tr:nth-child(5) > .x-date-active[title=\"\"]:nth-child(4) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>24</span></em></a>",
+                  "target": [
+                    "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(5) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>7</span></em></a>",
+                  "target": [
+                    ".x-date-nextday[title=\"\"]:nth-child(5) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>31</span></em></a>",
+          "target": [
+            "tr:nth-child(5) > .x-date-active[title=\"\"]:nth-child(5) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>25</span></em></a>",
+                  "target": [
+                    "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(6) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>8</span></em></a>",
+                  "target": [
+                    "tr:nth-child(6) > .x-date-nextday[title=\"\"]:nth-child(6) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>1</span></em></a>",
+          "target": [
+            "tr:nth-child(5) > .x-date-nextday[title=\"\"]:nth-child(6) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>26</span></em></a>",
+                  "target": [
+                    "tr:nth-child(4) > .x-date-active[title=\"\"]:nth-child(7) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                },
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>9</span></em></a>",
+                  "target": [
+                    "tr:nth-child(6) > .x-date-nextday[title=\"\"]:nth-child(7) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>2</span></em></a>",
+          "target": [
+            "tr:nth-child(5) > .x-date-nextday[title=\"\"]:nth-child(7) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>27</span></em></a>",
+                  "target": [
+                    "tr:nth-child(5) > .x-date-active[title=\"\"]:nth-child(1) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>3</span></em></a>",
+          "target": [
+            ".x-date-nextday[title=\"\"]:nth-child(1) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>28</span></em></a>",
+                  "target": [
+                    "tr:nth-child(5) > .x-date-active[title=\"\"]:nth-child(2) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>4</span></em></a>",
+          "target": [
+            ".x-date-nextday[title=\"\"]:nth-child(2) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>29</span></em></a>",
+                  "target": [
+                    "tr:nth-child(5) > .x-date-active[title=\"\"]:nth-child(3) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>5</span></em></a>",
+          "target": [
+            ".x-date-nextday[title=\"\"]:nth-child(3) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>30</span></em></a>",
+                  "target": [
+                    "tr:nth-child(5) > .x-date-active[title=\"\"]:nth-child(4) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>6</span></em></a>",
+          "target": [
+            ".x-date-nextday[title=\"\"]:nth-child(4) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>31</span></em></a>",
+                  "target": [
+                    "tr:nth-child(5) > .x-date-active[title=\"\"]:nth-child(5) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>7</span></em></a>",
+          "target": [
+            ".x-date-nextday[title=\"\"]:nth-child(5) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>1</span></em></a>",
+                  "target": [
+                    "tr:nth-child(5) > .x-date-nextday[title=\"\"]:nth-child(6) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>8</span></em></a>",
+          "target": [
+            "tr:nth-child(6) > .x-date-nextday[title=\"\"]:nth-child(6) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        },
+        {
+          "any": [
+            {
+              "id": "target-size",
+              "data": {
+                "minSize": 24,
+                "width": 23,
+                "height": 16
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has insufficient size (23px by 16px, should be at least 24px by 24px)"
+            },
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 12,
+                "minOffset": 24
+              },
+              "relatedNodes": [
+                {
+                  "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>2</span></em></a>",
+                  "target": [
+                    "tr:nth-child(5) > .x-date-nextday[title=\"\"]:nth-child(7) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Target has insufficient space to its closest neighbors. Safe clickable space has a diameter of 12px instead of at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<a href=\"#\" hidefocus=\"on\" class=\"x-date-date\" tabindex=\"1\"><em><span>9</span></em></a>",
+          "target": [
+            "tr:nth-child(6) > .x-date-nextday[title=\"\"]:nth-child(7) > .x-date-date[hidefocus=\"on\"][href=\"#\"]"
+          ]
+        }
+      ]
+    }
+  ]
+}

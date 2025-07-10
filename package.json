@@ -19,6 +19,7 @@
   "devDependencies": {
     "@types/node": "^24.0.7",
     "axe-core": "^4.10.3",
+    "axe-html-reporter": "^2.2.11",
     "glob": "^11.0.3",
     "gulp": "^5.0.1",
     "gulp-concat": "^2.6.1",

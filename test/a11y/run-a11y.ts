@@ -1,49 +1,87 @@
-import { chromium } from 'playwright';
+import { createHtmlReport } from 'axe-html-reporter';
+import fs from 'fs';
 import { glob } from 'glob';
 import path from 'path';
-import fs from 'fs';
+import { chromium } from 'playwright';
 
-async function runAxeOnExample(pathToFile: string, outputFile: string) {
+async function runAxeOnExample(pathToFile: string, reportDir: string) {
   const browser = await chromium.launch();
   const page = await browser.newPage();
-  await page.goto(`file://${path.resolve(pathToFile)}`);
+  const fileUrl = `file://${path.resolve(pathToFile)}`;
+  await page.goto(fileUrl);
+
+  const jsonPath = path.join(reportDir, `Results.json`);
+  const screenshotPath = path.join(reportDir, `Screenshot.png`);
+  const htmlPath = path.join(reportDir, `Report.html`);
+
+  fs.mkdirSync(reportDir, { recursive: true });
+
+  // take screenies
+  await page.screenshot({ path: screenshotPath, fullPage: true });
+  console.log(`Screenshot saved to ${screenshotPath}`);
 
   // Inject axe
   await page.addScriptTag({ path: require.resolve('axe-core') });
-
-  // Run axe
   const results = await page.evaluate(() => {
     // @ts-ignore
-    window.axe.configure({ reporter: "no-passes" });
+    window.axe.configure({
+      reporter: 'v2',
+      branding: {
+        application: 'axe-playwright-report'
+      }
+    });
+
     // @ts-ignore
-    return window.axe.run();
+    return window.axe.run(document.body, {
+      runOnly: {
+        type: 'tag',
+        values: ['wcag22aa', 'wcag21aa'], // https://github.com/dequelabs/axe-core/blob/237a5861b0fb044c885b154436696279deca7a13/doc/API.md?plain=1#L82
+      },
+      resultTypes: ['violations'], // Ignore passes, incomplete, inapplicable
+      exclude: ['body > h1', 'body > h2', 'body > h3', 'body > p'] // eclude tags that are not important
+    });
   });
 
-  // Output
-  fs.mkdirSync('a11y-reports', { recursive: true });
-  fs.writeFileSync(outputFile, JSON.stringify(results, null, 2));
-  console.log(`✅ Accessibility results written to ${outputFile}`);
+  // Write JSON results
+  fs.writeFileSync(jsonPath, JSON.stringify(results, null, 2));
+  console.log(`✅ JSON results written to ${jsonPath}`);
+
+  // Generate HTML report with embedded screenshot
+  const screenshotData = fs.readFileSync(screenshotPath);
+  const html = createHtmlReport({
+    results: results,
+    attachments: [
+      {
+        data: screenshotData.toString('base64'),
+        mimeType: 'image/png',
+        path: path.basename(screenshotPath),
+      },
+    ],
+  } as any);
+
+  fs.writeFileSync(htmlPath, html);
+  console.log(`✅ HTML report written to ${htmlPath}`);
 
   await browser.close();
 }
 
 // === CLI Handling ===
 (async () => {
-  const filename = process.argv[2];
+  const userInput = process.argv[2];
+  const pattern = userInput ? `examples/**/${userInput}` : `examples/**/*.html`;
 
-  if (!filename) {
-    console.error("❌ Please provide a filename like: npm run axe -- buttons.html");
+  const matchedFiles = await glob(pattern);
+
+  if (matchedFiles.length === 0) {
+    console.error(`❌ Could not find any HTML files matching '${userInput || '*.html'}'`);
     process.exit(1);
   }
 
-  const matchingFiles = await glob(`examples/**/${filename}`);
-  if (matchingFiles.length === 0) {
-    console.error(`❌ Could not find example file matching '${filename}'`);
-    process.exit(1);
+  for (const file of matchedFiles) {
+    const baseName = path.basename(file, '.html');
+    const reportDir = path.join('artifacts', baseName);
+    console.log(`\n▶ Running axe on: ${file}`);
+    await runAxeOnExample(file, reportDir);
   }
-
-  const file = matchingFiles[0]; // Only use the first match
-  const out = `a11y-reports/${path.basename(file)}.json`;
-
-  await runAxeOnExample(file, out);
 })();
+ 

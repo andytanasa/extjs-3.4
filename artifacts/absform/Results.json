@@ -1,0 +1,161 @@
+{
+  "testEngine": {
+    "name": "axe-core",
+    "version": "4.10.3"
+  },
+  "testRunner": {
+    "name": "axe"
+  },
+  "testEnvironment": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/138.0.7204.23 Safari/537.36",
+    "windowWidth": 1280,
+    "windowHeight": 720,
+    "orientationAngle": 0,
+    "orientationType": "landscape-primary"
+  },
+  "timestamp": "2025-07-10T06:44:05.552Z",
+  "url": "file:///C:/Endava/EndevLocal/Ext.js.3.4/extjs-3.4/examples/form/absform.html",
+  "toolOptions": {
+    "runOnly": {
+      "type": "tag",
+      "values": [
+        "wcag22aa",
+        "wcag21aa"
+      ]
+    },
+    "resultTypes": [
+      "violations"
+    ],
+    "exclude": [
+      "body > h1",
+      "body > h2",
+      "body > h3",
+      "body > p"
+    ],
+    "reporter": "v2"
+  },
+  "inapplicable": [],
+  "passes": [
+    {
+      "id": "autocomplete-valid",
+      "impact": null,
+      "tags": [
+        "cat.forms",
+        "wcag21aa",
+        "wcag135",
+        "EN-301-549",
+        "EN-9.1.3.5",
+        "ACT"
+      ],
+      "description": "Ensure the autocomplete attribute is correct and suitable for the form field",
+      "help": "autocomplete attribute must be used correctly",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/autocomplete-valid?application=axe-playwright-report",
+      "nodes": [
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "autocomplete-valid",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "the autocomplete attribute is correctly formatted"
+            }
+          ],
+          "none": [],
+          "impact": null,
+          "html": "<input type=\"text\" size=\"20\" autocomplete=\"off\" id=\"ext-comp-1003\" name=\"to\" class=\" x-form-text x-form-field x-abs-layout-item\" style=\"left: 60px; top: 0px; width: 414px;\">",
+          "target": [
+            "#ext-comp-1003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "avoid-inline-spacing",
+      "impact": null,
+      "tags": [
+        "cat.structure",
+        "wcag21aa",
+        "wcag1412",
+        "EN-301-549",
+        "EN-9.1.4.12",
+        "ACT"
+      ],
+      "description": "Ensure that text spacing set through style attributes can be adjusted with custom stylesheets",
+      "help": "Inline text spacing must be adjustable with custom stylesheets",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/avoid-inline-spacing?application=axe-playwright-report",
+      "nodes": [
+        {
+          "any": [],
+          "all": [
+            {
+              "id": "important-letter-spacing",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Letter-spacing in the style attribute is not set to !important, or meets the minimum"
+            },
+            {
+              "id": "important-word-spacing",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "word-spacing in the style attribute is not set to !important, or meets the minimum"
+            },
+            {
+              "id": "important-line-height",
+              "data": null,
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "line-height in the style attribute is not set to !important, or meets the minimum"
+            }
+          ],
+          "none": [],
+          "impact": null,
+          "html": "<div class=\"x-shadow\" id=\"ext-gen32\" style=\"z-index: 9002; left: 386px; top: 213px; width: 508px; height: 300px; display: block;\">",
+          "target": [
+            "#ext-gen32"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "target-size",
+      "impact": null,
+      "tags": [
+        "cat.sensory-and-visual-cues",
+        "wcag22aa",
+        "wcag258"
+      ],
+      "description": "Ensure touch targets have sufficient size and space",
+      "help": "All touch targets must be 24px large, or leave sufficient space",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/target-size?application=axe-playwright-report",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "target-offset",
+              "data": {
+                "closestOffset": 24,
+                "minOffset": 24
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Target has sufficient space from its closest neighbors. Safe clickable space has a diameter of 24px which is at least 24px."
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": null,
+          "html": "<input type=\"text\" size=\"20\" autocomplete=\"off\" id=\"ext-comp-1003\" name=\"to\" class=\" x-form-text x-form-field x-abs-layout-item\" style=\"left: 60px; top: 0px; width: 414px;\">",
+          "target": [
+            "#ext-comp-1003"
+          ]
+        }
+      ]
+    }
+  ],
+  "incomplete": [],
+  "violations": []
+}
