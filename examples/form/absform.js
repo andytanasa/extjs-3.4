@@ -11,33 +11,51 @@ Ext.onReady(function() {
         url:'save-form.php',
         defaultType: 'textfield',
 
-        items: [{
-            x: 0,
-            y: 5,
-            xtype:'label',
-            text: 'Send To:'
-        },{
-            x: 60,
-            y: 0,
-            name: 'to',
-            anchor:'100%'  // anchor width by percentage
-        },{
-            x: 0,
-            y: 35,
-            xtype:'label',
-            text: 'Subject:'
-        },{
-            x: 60,
-            y: 30,
-            name: 'subject',
-            anchor: '100%'  // anchor width by percentage
-        },{
-            x:0,
-            y: 60,
-            xtype: 'textarea',
-            name: 'msg',
-            anchor: '100% 100%'  // anchor width and height
-        }]
+         items: [
+            // "Send To" label
+            {
+                x: 0, y: 5,
+                xtype: 'label',
+                text: 'Send To:',
+                forId: 'to-input'
+            },
+            // "Send To" field
+            {
+                x: 60, y: 0,
+                name: 'to',
+                id: 'to-input',
+                anchor: '100%'
+            },
+            // "Subject" label
+            {
+                x: 0, y: 35,
+                xtype: 'label',
+                text: 'Subject:',
+                forId: 'subject-input'
+            },
+            // "Subject" field
+            {
+                x: 60, y: 30,
+                name: 'subject',
+                id: 'subject-input',
+                anchor: '100%'
+            },
+            // "Message" label
+            {
+                x: 0, y: 65,
+                xtype: 'label',
+                text: 'Message:',
+                forId: 'msg-input'
+            },
+            // "Message" textarea
+            {
+                x: 60, y: 60,
+                xtype: 'textarea',
+                name: 'msg',
+                id: 'msg-input',
+                anchor: '100% 100%'
+            }
+        ]
     });
 
     var window = new Ext.Window({

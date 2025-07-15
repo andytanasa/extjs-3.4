@@ -1425,7 +1425,7 @@ Ext.TaskMgr = new Ext.util.TaskRunner();(function(){
         ADJ_SCOPE = 3,
         SCROLLLEFT = 'scrollLeft',
         SCROLLTOP = 'scrollTop',
-        UNLOAD = 'unload',
+        UNLOAD = 'beforeunload', // Changed from 'unload' to 'beforeunload' to fix permissions policy violation
         MOUSEOVER = 'mouseover',
         MOUSEOUT = 'mouseout',
         // private
@@ -1745,7 +1745,9 @@ Ext.TaskMgr = new Ext.util.TaskRunner();(function(){
 
             Ext.EventManager._unload();
 
+            // Remove both beforeunload and pagehide event listeners
             doRemove(win, UNLOAD, EU._unload);
+            doRemove(win, "pagehide", EU._unload);
         }
     };
 
@@ -1757,7 +1759,10 @@ Ext.TaskMgr = new Ext.util.TaskRunner();(function(){
     } else {
         doAdd(win, "load", pub._load);
     }
+    // Use beforeunload instead of unload for better compatibility and to fix permissions policy violation
     doAdd(win, UNLOAD, pub._unload);
+    // Also listen to pagehide as a fallback for modern browsers
+    doAdd(win, "pagehide", pub._unload);
     _tryPreloadAttach();
 
     return pub;
@@ -2902,8 +2907,20 @@ Ext.lib.Ajax = function() {
             delete p.createCallback;
             delete p.createInterceptor;
 
-            window.detachEvent("onunload", fnCleanUp);
+            // Use beforeunload instead of unload to fix permissions policy violation
+            if (window.detachEvent) {
+                window.detachEvent("onbeforeunload", fnCleanUp);
+            } else if (window.removeEventListener) {
+                window.removeEventListener("beforeunload", fnCleanUp);
+                window.removeEventListener("pagehide", fnCleanUp);
+            }
         }
-        window.attachEvent("onunload", fnCleanUp);
+        // Use beforeunload and pagehide instead of unload to fix permissions policy violation
+        if (window.attachEvent) {
+            window.attachEvent("onbeforeunload", fnCleanUp);
+        } else if (window.addEventListener) {
+            window.addEventListener("beforeunload", fnCleanUp);
+            window.addEventListener("pagehide", fnCleanUp);
+        }
     }
 })();

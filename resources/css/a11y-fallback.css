@@ -1,0 +1,19 @@
+/* Accessibility fallback for button text contrast */
+.x-btn .x-btn-text {
+  color: #111 !important; /* High contrast text */
+  background: #fff !important; /* Ensure readable background */
+}
+
+/* Optional: fallback for icon+text buttons */
+.x-btn-text-icon .x-btn-text {
+  color: #111 !important;
+  background: #fff !important;
+}
+
+/* Optional: fallback for disabled buttons */
+.x-btn .x-btn-text[aria-disabled="true"] {
+  color: #888 !important;
+  background: #f5f5f5 !important;
+}
+
+/* Add more rules as needed for your theme */

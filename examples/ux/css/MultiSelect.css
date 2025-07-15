@@ -4,24 +4,65 @@
  * licensing@sencha.com
  * http://www.sencha.com/license
  */
+
+/* Screen reader only class for additional context */
+.sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
 .ux-mselect{
     overflow:auto;
     background:white;
     position:relative; /* for calculating scroll offsets */
     zoom:1;
-    overflow:auto;	
+    overflow:auto;
+    border: 1px solid #b5b8c8;
+    border-radius: 3px;
 }
+
+.ux-mselect:focus-within {
+    outline: 2px solid #005fcc;
+    outline-offset: 2px;
+}
+
 .ux-mselect-item{
     font:normal 12px tahoma, arial, helvetica, sans-serif;
     padding:2px;
     border:1px solid #fff;
     white-space: nowrap;
     cursor:pointer;
+    position: relative;
 }
+
+.ux-mselect-item:hover {
+    background: #e6f1ff;
+    border-color: #b3d4fc;
+}
+
+.ux-mselect-item:focus {
+    outline: 2px solid #005fcc;
+    outline-offset: -2px;
+    background: #cce7ff;
+}
+
 .ux-mselect-selected{
 	border:1px dotted #a3bae9 !important;
     background:#DFE8F6;
     cursor:pointer;
+}
+
+.ux-mselect-selected:focus {
+    outline: 2px solid #005fcc;
+    outline-offset: -2px;
+    background: #b3d4fc;
 }
 
 .x-view-drag-insert-above { 
@@ -33,4 +74,25 @@
 
 .ext-ie .ux-form-multiselect .x-fieldset legend {
     margin-bottom: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .ux-mselect-item:focus,
+    .ux-mselect-selected:focus {
+        outline: 3px solid;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .ux-mselect-item,
+    .ux-mselect-selected {
+        transition: none;
+    }
+}
+
+/* Demo spacing - moving inline style to CSS */
+.demo-multiselect-spacing {
+    margin-bottom: 15px;
 }

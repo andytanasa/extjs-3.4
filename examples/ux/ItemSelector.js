@@ -93,7 +93,11 @@ Ext.ux.form.ItemSelector = Ext.extend(Ext.form.Field,  {
         p.render(this.el);
         icons.el.down('.'+icons.bwrapCls).remove();
 
-        // ICON HELL!!!
+        // Add accessibility attributes to the main container
+        p.el.dom.setAttribute('role', 'application');
+        p.el.dom.setAttribute('aria-label', 'Item selector with available and selected lists');
+
+        // ICON HELL!!! (but with accessibility improvements)
         if (this.imagePath!="" && this.imagePath.charAt(this.imagePath.length-1)!="/")
             this.imagePath+="/";
         this.iconUp = this.imagePath + (this.iconUp || 'up2.gif');
@@ -102,18 +106,62 @@ Ext.ux.form.ItemSelector = Ext.extend(Ext.form.Field,  {
         this.iconRight = this.imagePath + (this.iconRight || 'right2.gif');
         this.iconTop = this.imagePath + (this.iconTop || 'top2.gif');
         this.iconBottom = this.imagePath + (this.iconBottom || 'bottom2.gif');
+        
         var el=icons.getEl();
-        this.toTopIcon = el.createChild({tag:'img', src:this.iconTop, style:{cursor:'pointer', margin:'2px'}});
+        
+        // Create accessible buttons instead of plain images
+        this.toTopIcon = el.createChild({
+            tag:'button', 
+            type: 'button',
+            'aria-label': 'Move selected items to top',
+            style:{cursor:'pointer', margin:'2px', background: 'none', border: 'none'},
+            children: [{tag:'img', src:this.iconTop, alt:'Move to top'}]
+        });
         el.createChild({tag: 'br'});
-        this.upIcon = el.createChild({tag:'img', src:this.iconUp, style:{cursor:'pointer', margin:'2px'}});
+        
+        this.upIcon = el.createChild({
+            tag:'button',
+            type: 'button', 
+            'aria-label': 'Move selected items up',
+            style:{cursor:'pointer', margin:'2px', background: 'none', border: 'none'},
+            children: [{tag:'img', src:this.iconUp, alt:'Move up'}]
+        });
         el.createChild({tag: 'br'});
-        this.addIcon = el.createChild({tag:'img', src:this.iconRight, style:{cursor:'pointer', margin:'2px'}});
+        
+        this.addIcon = el.createChild({
+            tag:'button',
+            type: 'button',
+            'aria-label': 'Add selected items from available to selected list',
+            style:{cursor:'pointer', margin:'2px', background: 'none', border: 'none'},
+            children: [{tag:'img', src:this.iconRight, alt:'Add items'}]
+        });
         el.createChild({tag: 'br'});
-        this.removeIcon = el.createChild({tag:'img', src:this.iconLeft, style:{cursor:'pointer', margin:'2px'}});
+        
+        this.removeIcon = el.createChild({
+            tag:'button',
+            type: 'button',
+            'aria-label': 'Remove selected items from selected to available list',
+            style:{cursor:'pointer', margin:'2px', background: 'none', border: 'none'},
+            children: [{tag:'img', src:this.iconLeft, alt:'Remove items'}]
+        });
         el.createChild({tag: 'br'});
-        this.downIcon = el.createChild({tag:'img', src:this.iconDown, style:{cursor:'pointer', margin:'2px'}});
+        
+        this.downIcon = el.createChild({
+            tag:'button',
+            type: 'button',
+            'aria-label': 'Move selected items down',
+            style:{cursor:'pointer', margin:'2px', background: 'none', border: 'none'},
+            children: [{tag:'img', src:this.iconDown, alt:'Move down'}]
+        });
         el.createChild({tag: 'br'});
-        this.toBottomIcon = el.createChild({tag:'img', src:this.iconBottom, style:{cursor:'pointer', margin:'2px'}});
+        
+        this.toBottomIcon = el.createChild({
+            tag:'button',
+            type: 'button',
+            'aria-label': 'Move selected items to bottom',
+            style:{cursor:'pointer', margin:'2px', background: 'none', border: 'none'},
+            children: [{tag:'img', src:this.iconBottom, alt:'Move to bottom'}]
+        });
         this.toTopIcon.on('click', this.toTop, this);
         this.upIcon.on('click', this.up, this);
         this.downIcon.on('click', this.down, this);

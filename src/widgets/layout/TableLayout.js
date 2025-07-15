@@ -111,9 +111,9 @@ Ext.layout.TableLayout = Ext.extend(Ext.layout.ContainerLayout, {
 
         if(!this.table){
             target.addClass('x-table-layout-ct');
-            // Accessibility: hide layout table from assistive technologies
+            // Accessibility: do not set role="presentation" on any table, let ARIA be set by consumer if needed
             this.tableAttrs = this.tableAttrs ?? {};
-            this.tableAttrs.role = 'presentation';
+            delete this.tableAttrs.role;
             this.table = target.createChild(
                 Ext.apply({tag:'table', cls:'x-table-layout', cellspacing: 0, cn: {tag: 'tbody'}}, this.tableAttrs), null, true);
         }

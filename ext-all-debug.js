@@ -24182,9 +24182,9 @@ Ext.layout.TableLayout = Ext.extend(Ext.layout.ContainerLayout, {
 
         if(!this.table){
             target.addClass('x-table-layout-ct');
-            // Accessibility: hide layout table from assistive technologies
+            // Accessibility: do not set role="presentation" on any table, let ARIA be set by consumer if needed
             this.tableAttrs = this.tableAttrs ?? {};
-            this.tableAttrs.role = 'presentation';
+            delete this.tableAttrs.role;
             this.table = target.createChild(
                 Ext.apply({tag:'table', cls:'x-table-layout', cellspacing: 0, cn: {tag: 'tbody'}}, this.tableAttrs), null, true);
         }
@@ -29143,41 +29143,113 @@ cp.colors = ['000000', '993300', '333300'];
     },
 
     // private
-    onRender : function(container, position){
-        this.autoEl = {
-            tag: 'div',
-            cls: this.itemCls,
-            tabIndex: 0,
-            role: 'listbox'
-        };
-        Ext.ColorPalette.superclass.onRender.call(this, container, position);
-        var t = this.tpl || new Ext.XTemplate(
-            '<tpl for="."><a href="#" class="color-{.}" hidefocus="on"><em><span style="background:#{.}" unselectable="on">&#160;</span></em></a></tpl>'
-        );
-        t.overwrite(this.el, this.colors);
-        this.colorEls = this.el.select('a');
-        this.colorEls.each(function(a, all, i){
-            a.dom.tabIndex = -1;
-            a.dom.id = this.id + '-color-' + i;
-        }, this);
-        this.mon(this.el, this.clickEvent, this.handleClick, this, {delegate: 'a'});
-        if(this.clickEvent != 'click'){
-                this.mon(this.el, 'click', Ext.emptyFn, this, {delegate: 'a', preventDefault: true});
-        }
-        this.mon(this.el, 'focus', function(){
-            var idx = this.value ? this.colors.indexOf(this.value) : 0;
-            this.focusItem(idx);
-        }, this);
-        this.keyNav = new Ext.KeyNav(this.el, {
-            scope: this,
-            left: this.focusPrev,
-            right: this.focusNext,
-            up: this.focusPrev,
-            down: this.focusNext,
-            space: this.selectFocused,
-            enter: this.selectFocused
+onRender: function(container, position) {
+    // 1. ARIA and base element setup
+    this.autoEl = {
+        tag: 'div',
+        cls: this.itemCls,
+        tabIndex: 0,
+        role: 'listbox',
+        'aria-label': this.ariaLabel || 'Color palette',
+        'aria-activedescendant': ''
+    };
+    Ext.ColorPalette.superclass.onRender.call(this, container, position);
+
+    // 2. Render swatches, add ARIA and IDs
+    var t = this.tpl || new Ext.XTemplate(
+        '<tpl for=".">',
+            '<a href="#" class="color-{.}" hidefocus="on" role="option" aria-label="Color #{.}" aria-selected="false"><em>',
+                '<span style="background:#{.}" unselectable="on">&#160;</span>',
+            '</em></a>',
+        '</tpl>'
+    );
+    t.overwrite(this.el, this.colors);
+
+    this.colorEls = this.el.select('a');
+    var palette = this; // for closure use
+
+    // Add ARIA, IDs, and one keydown handler per swatch
+    this.colorEls.each(function(a, all, i){
+        a.dom.tabIndex = -1;
+        a.dom.id = this.id + '-color-' + i;
+        a.dom.setAttribute('role', 'option');
+        a.dom.setAttribute('aria-label', 'Color #' + this.colors[i]);
+        a.dom.setAttribute('aria-selected', 'false');
+
+        // Remove any old handlers before assigning a new one
+        a.un('keydown');
+        a.on('keydown', function(ev) {
+            var key = ev.getKey ? ev.getKey() : (ev.keyCode || ev.which);
+            if (key == 37 || key == 38) { // Left/Up
+                palette.focusPrev();
+                ev.stopEvent();
+            } else if (key == 39 || key == 40) { // Right/Down
+                palette.focusNext();
+                ev.stopEvent();
+            } else if (key == 13 || key == 32) { // Enter/Space
+                palette.selectFocused(ev);
+            }
         });
-    },
+    }, this);
+
+    // 3. Mouse/click event
+    this.mon(this.el, this.clickEvent, this.handleClick, this, { delegate: 'a' });
+    if (this.clickEvent != 'click') {
+        this.mon(this.el, 'click', Ext.emptyFn, this, { delegate: 'a', preventDefault: true });
+    }
+
+    // 4. Focus trap for accessibility:
+    // Whenever the root <div> is focused (Tab in), move focus to the current color swatch.
+    // (If focus is already on a swatch, do nothing.)
+     var moveFocusToSwatch = function() {
+        setTimeout(function() {
+            // Check if any swatch is currently focused
+            var active = document.activeElement;
+            var swatchHasFocus = false;
+            palette.colorEls.each(function(a) {
+                if (a.dom === active) swatchHasFocus = true;
+            });
+            if (!swatchHasFocus) {
+                // Move focus to selected color or first color
+                var idx = palette.value ? palette.colors.indexOf(palette.value) : 0;
+                palette.focusItem(idx);
+            }
+        }, 10);
+    }
+    this.el.on('focus', moveFocusToSwatch, this);
+    this.el.on('focusin', moveFocusToSwatch, this);
+},
+
+focusItem: function(idx) {
+    var el = this.colorEls.item(idx);
+    if (el) {
+        el.dom.focus();
+        this.el.dom.setAttribute('aria-activedescendant', el.dom.id);
+        this.focusIndex = idx;
+    }
+},
+
+moveFocus: function(step) {
+    if (!this.colorEls) return;
+    var count = this.colorEls.getCount();
+    var idx = ((this.focusIndex || 0) + step + count) % count;
+    this.focusItem(idx);
+},
+
+focusPrev: function() {
+    this.moveFocus(-1);
+},
+
+focusNext: function() {
+    this.moveFocus(1);
+},
+
+selectFocused: function(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    if (this.focusIndex >= 0) {
+        this.select(this.colors[this.focusIndex]);
+    }
+},
 
     // private
     afterRender : function(){
@@ -29203,58 +29275,33 @@ cp.colors = ['000000', '993300', '333300'];
      * @param {String} color A valid 6-digit color hex code (# will be stripped if included)
      * @param {Boolean} suppressEvent (optional) True to stop the select event from firing. Defaults to <tt>false</tt>.
      */
-    select : function(color, suppressEvent){
-        color = color.replace('#', '');
-        if(color != this.value || this.allowReselect){
-            var el = this.el;
-            if(this.value){
-                el.child('a.color-'+this.value).removeClass('x-color-palette-sel');
+   select : function(color, suppressEvent){
+    color = color.replace('#', '');
+    if(color != this.value || this.allowReselect){
+        var el = this.el;
+        // Unselect previously selected
+        if(this.value){
+            var prev = el.child('a.color-' + this.value);
+            if (prev) {
+                prev.removeClass('x-color-palette-sel');
+                prev.dom.setAttribute('aria-selected', 'false');
             }
-            var a = el.child('a.color-'+color);
+        }
+        // Select new color
+        var a = el.child('a.color-' + color);
+        if(a){
             a.addClass('x-color-palette-sel');
-            this.value = color;
-            if(a){
-                this.el.dom.setAttribute('aria-activedescendant', a.dom.id);
-                this.focusIndex = this.colorEls.indexOf(a.dom);
-            }
-            if(suppressEvent !== true){
-                this.fireEvent('select', this, color);
-            }
+            a.dom.setAttribute('aria-selected', 'true');
+            this.el.dom.setAttribute('aria-activedescendant', a.dom.id);
+            this.focusIndex = this.colorEls.indexOf(a.dom);
         }
-    },
-
-    focusItem : function(idx){
-        var el = this.colorEls.item(idx);
-        if(el){
-            el.dom.focus();
-            this.el.dom.setAttribute('aria-activedescendant', el.dom.id);
-            this.focusIndex = idx;
-        }
-    },
-
-    moveFocus : function(step){
-        if(!this.colorEls){
-            return;
-        }
-        var count = this.colorEls.getCount();
-        var idx = (this.focusIndex + step + count) % count;
-        this.focusItem(idx);
-    },
-
-    focusPrev : function(){
-        this.moveFocus(-1);
-    },
-
-    focusNext : function(){
-        this.moveFocus(1);
-    },
-
-    selectFocused : function(e){
-        e.preventDefault();
-        if(this.focusIndex >= 0){
-            this.select(this.colors[this.focusIndex]);
+        this.value = color;
+        if(suppressEvent !== true){
+            this.fireEvent('select', this, color);
         }
     }
+},
+
 
     /**
      * @cfg {String} autoEl @hide
@@ -50143,11 +50190,11 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
     onRender : function(ct, position){
         if(!this.template){
             if(!Ext.Button.buttonTemplate){
-                // hideous table template
+                // hideous table template (patched: removed role="presentation" from table and em)
                 Ext.Button.buttonTemplate = new Ext.Template(
-                    '<table id="{4}" cellspacing="0" class="x-btn {3}" role="presentation"><tbody class="{1}">',
+                    '<table id="{4}" cellspacing="0" class="x-btn {3}"><tbody class="{1}">',
                     '<tr><td class="x-btn-tl"><i role="presentation" aria-hidden="true">&#160;</i></td><td class="x-btn-tc"></td><td class="x-btn-tr"><i role="presentation" aria-hidden="true">&#160;</i></td></tr>',
-                    '<tr><td class="x-btn-ml"><i role="presentation" aria-hidden="true">&#160;</i></td><td class="x-btn-mc"><em class="{2}" unselectable="on" role="presentation"><button type="{0}"></button></em></td><td class="x-btn-mr"><i role="presentation" aria-hidden="true">&#160;</i></td></tr>',
+                    '<tr><td class="x-btn-ml"><i role="presentation" aria-hidden="true">&#160;</i></td><td class="x-btn-mc"><em class="{2}" unselectable="on"><button type="{0}"></button></em></td><td class="x-btn-mr"><i role="presentation" aria-hidden="true">&#160;</i></td></tr>',
                     '<tr><td class="x-btn-bl"><i role="presentation" aria-hidden="true">&#160;</i></td><td class="x-btn-bc"></td><td class="x-btn-br"><i role="presentation" aria-hidden="true">&#160;</i></td></tr>',
                     '</tbody></table>');
                 Ext.Button.buttonTemplate.compile();
@@ -50757,12 +50804,76 @@ Ext.SplitButton = Ext.extend(Ext.Button, {
     },
 
     // private
-    onRender : function(){
-        Ext.SplitButton.superclass.onRender.apply(this, arguments);
-        if(this.arrowTooltip){
-            this.el.child(this.arrowSelector).dom[this.tooltipType] = this.arrowTooltip;
-        }
-    },
+   onRender : function(){
+    Ext.SplitButton.superclass.onRender.apply(this, arguments);
+
+    // Make the main button and arrow split accessible
+    var btnEl = this.el.child('button'); // Main button element
+    var arrowEl = this.el.child(this.arrowSelector); // Arrow element (the <em>)
+
+    // 1. Main button ARIA
+    if (btnEl) {
+        btnEl.dom.setAttribute('role', 'button');
+        btnEl.dom.setAttribute('tabindex', '0');
+        btnEl.dom.setAttribute('aria-haspopup', this.menu ? 'true' : 'false');
+        btnEl.dom.setAttribute('aria-expanded', 'false');
+        btnEl.dom.setAttribute('aria-label', this.text || this.ariaLabel || 'Options');
+        btnEl.dom.addEventListener('focus', function(){ btnEl.addClass('x-btn-focused'); });
+        btnEl.dom.addEventListener('blur', function(){ btnEl.removeClass('x-btn-focused'); });
+    }
+
+    // 2. Arrow ARIA/label
+    if (arrowEl) {
+        arrowEl.dom.setAttribute('role', 'button');
+        arrowEl.dom.setAttribute('tabindex', '0');
+        // ARIA label for arrow (use tooltip, or fallback)
+        var arrowLabel = this.arrowTooltip || (this.text ? this.text + ' menu' : 'Open options menu');
+        arrowEl.dom.setAttribute('aria-label', arrowLabel);
+        arrowEl.dom.setAttribute('aria-haspopup', this.menu ? 'true' : 'false');
+        arrowEl.dom.setAttribute('aria-expanded', 'false');
+        arrowEl.dom.addEventListener('focus', function(){ arrowEl.addClass('x-btn-arrow-focused'); });
+        arrowEl.dom.addEventListener('blur', function(){ arrowEl.removeClass('x-btn-arrow-focused'); });
+    }
+
+    // 3. Keyboard events: open menu with Enter/Space/ArrowDown, focus management
+    var that = this;
+    if (btnEl) {
+        btnEl.dom.addEventListener('keydown', function(e){
+            if (e.key === 'Enter' || e.key === ' ') {
+                that.onClick(e, btnEl.dom);
+                e.preventDefault();
+            } else if (e.key === 'ArrowDown' && that.menu) {
+                that.showMenu();
+                e.preventDefault();
+            }
+        });
+    }
+    if (arrowEl) {
+        arrowEl.dom.addEventListener('keydown', function(e){
+            if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+                that.showMenu();
+                e.preventDefault();
+            }
+        });
+    }
+
+    // 4. When menu opens/closes, update aria-expanded for both main and arrow
+    if (this.menu) {
+        this.menu.on('show', function(){
+            if (btnEl) btnEl.dom.setAttribute('aria-expanded', 'true');
+            if (arrowEl) arrowEl.dom.setAttribute('aria-expanded', 'true');
+        });
+        this.menu.on('hide', function(){
+            if (btnEl) btnEl.dom.setAttribute('aria-expanded', 'false');
+            if (arrowEl) arrowEl.dom.setAttribute('aria-expanded', 'false');
+        });
+    }
+
+    // Existing arrow tooltip
+    if (this.arrowTooltip) {
+        arrowEl.dom[this.tooltipType] = this.arrowTooltip;
+    }
+},
 
     /**
      * Sets this button's arrow click handler.
@@ -60810,7 +60921,7 @@ Ext.menu.Menu = Ext.extend(Ext.Container, {
         this.focusEl = this.el.child('a.x-menu-focus');
         this.ul = this.el.child('ul.x-menu-list');
         // Accessibility: mark menu container and menu list
-        this.el.dom.setAttribute('role', 'presentation');
+        this.el.dom.setAttribute('role', 'menu');
         this.ul.dom.setAttribute('role', 'menu');
         // Accessibility: add labels for any form fields in the menu
         this.items.each(function(item){
@@ -61625,8 +61736,7 @@ Ext.menu.BaseItem = Ext.extend(Ext.Component, {
         if(this.ownerCt && this.ownerCt instanceof Ext.menu.Menu){
             this.parentMenu = this.ownerCt;
         }else{
-            // Accessibility: hide list-item wrapper
-            this.container.dom.setAttribute('role', 'presentation');
+            // Accessibility: do not set role="presentation"; let menu items inherit correct roles
             this.container.addClass('x-menu-list-item');
             this.mon(this.el, {
                 scope: this,
@@ -61794,7 +61904,7 @@ Ext.menu.Separator = Ext.extend(Ext.menu.BaseItem, {
         this.el = s;
         // Accessibility: mark as menu separator
         s.setAttribute('role', 'separator');
-        li.dom.setAttribute('role', 'presentation');
+        // Removed role="presentation" for accessibility compliance
         li.addClass("x-menu-sep-li");
         Ext.menu.Separator.superclass.onRender.apply(this, arguments);
     }
@@ -62353,8 +62463,9 @@ Ext.reg('menucheckitem', Ext.menu.CheckItem);
      * @type ColorPalette
      * The {@link Ext.ColorPalette} instance for this ColorMenu
      */
-    
-    
+
+    ariaLabel: 'Color picker menu',
+
     /**
      * @event click
      * @hide
@@ -62365,29 +62476,44 @@ Ext.reg('menucheckitem', Ext.menu.CheckItem);
      * @hide
      */
     
-    initComponent : function(){
+       initComponent: function () {
+        // Apply ARIA label to the menu root element
+        var paletteConfig = Ext.applyIf({
+            id: this.paletteId,
+            // Forward the menu's ARIA label to the palette for context
+            ariaLabel: this.ariaLabel ? this.ariaLabel + ' list' : 'Color choices'
+        }, this.initialConfig);
+
+        // Palette is accessible because we already fixed Ext.ColorPalette!
         Ext.apply(this, {
             plain: true,
             showSeparator: false,
-            items: this.palette = new Ext.ColorPalette(Ext.applyIf({
-                id: this.paletteId
-            }, this.initialConfig))
+            items: this.palette = new Ext.ColorPalette(paletteConfig)
         });
+
         this.palette.purgeListeners();
         Ext.menu.ColorMenu.superclass.initComponent.call(this);
-        /**
-         * @event select
-         * Fires when a color is selected from the {@link #palette Ext.ColorPalette}
-         * @param {Ext.ColorPalette} palette The {@link #palette Ext.ColorPalette}
-	     * @param {String} color The 6-digit color hex code (without the # symbol)
-         */
+
+        // Forward events and hide on select
         this.relayEvents(this.palette, ['select']);
         this.on('select', this.menuHide, this);
-        if(this.handler){
+
+        if (this.handler) {
             this.on('select', this.handler, this.scope || this);
         }
     },
 
+    onRender: function (ct, pos) {
+        Ext.menu.ColorMenu.superclass.onRender.call(this, ct, pos);
+
+        // Add role="menu" and aria-label to menu container for screen readers
+        if (this.el) {
+            this.el.dom.setAttribute('role', 'menu');
+            if (this.ariaLabel) {
+                this.el.dom.setAttribute('aria-label', this.ariaLabel);
+            }
+        }
+    },
     menuHide : function(){
         if(this.hideOnClick){
             this.hide(true);

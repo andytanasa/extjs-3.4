@@ -11,13 +11,15 @@ Ext.onReady(function(){
     var dateMenu = new Ext.menu.DateMenu({
         handler: function(dp, date){
             Ext.example.msg('Date Selected', 'You chose {0}.', date.format('M j, Y'));
-        }
+        },
+        ariaRole: 'menu' // Add ARIA role
     });
 
     var colorMenu = new Ext.menu.ColorMenu({
         handler: function(cm, color){
             Ext.example.msg('Color Selected', 'You chose {0}.', color);
-        }
+        },
+        ariaRole: 'menu' // Add ARIA role
     });
 
     var store = new Ext.data.ArrayStore({
@@ -37,7 +39,9 @@ Ext.onReady(function(){
         getListParent: function() {
             return this.el.up('.x-menu');
         },
-        iconCls: 'no-icon'
+        iconCls: 'no-icon',
+        ariaRole: 'combobox', // Add ARIA role
+        ariaLabel: 'State selection' // Add ARIA label
     });
 
     var menu = new Ext.menu.Menu({
@@ -45,39 +49,50 @@ Ext.onReady(function(){
         style: {
             overflow: 'visible'     // For the Combo popup
         },
+        ariaRole: 'menu', // Add ARIA role
         items: [
             { xtype: 'menutextitem', text: '<label for="' + combo.getId() + '">Select a state:</label>' },
             combo,                  // A Field in a Menu
             {
                 text: 'I like Ext',
                 checked: true,       // when checked has a boolean value, it is assumed to be a CheckItem
-                checkHandler: onItemCheck
+                checkHandler: onItemCheck,
+                ariaRole: 'menuitemcheckbox', // Add ARIA role
+                ariaLabel: 'I like Ext checkbox' // Add ARIA label
             }, '-', {
                 text: 'Radio Options',
                 menu: {        // <-- submenu by nested config object
+                    ariaRole: 'menu', // Add ARIA role
                     items: [
-                        // stick any markup in a menu
                         '<b class="menu-title">Choose a Theme</b>',
                         {
                             text: 'Aero Glass',
                             checked: true,
                             group: 'theme',
-                            checkHandler: onItemCheck
+                            checkHandler: onItemCheck,
+                            ariaRole: 'menuitemradio', // Add ARIA role
+                            ariaLabel: 'Aero Glass radio button' // Add ARIA label
                         }, {
                             text: 'Vista Black',
                             checked: false,
                             group: 'theme',
-                            checkHandler: onItemCheck
+                            checkHandler: onItemCheck,
+                            ariaRole: 'menuitemradio', // Add ARIA role
+                            ariaLabel: 'Vista Black radio button' // Add ARIA label
                         }, {
                             text: 'Gray Theme',
                             checked: false,
                             group: 'theme',
-                            checkHandler: onItemCheck
+                            checkHandler: onItemCheck,
+                            ariaRole: 'menuitemradio', // Add ARIA role
+                            ariaLabel: 'Gray Theme radio button' // Add ARIA label
                         }, {
                             text: 'Default Theme',
                             checked: false,
                             group: 'theme',
-                            checkHandler: onItemCheck
+                            checkHandler: onItemCheck,
+                            ariaRole: 'menuitemradio', // Add ARIA role
+                            ariaLabel: 'Default Theme radio button' // Add ARIA label
                         }
                     ]
                 }
@@ -98,13 +113,16 @@ Ext.onReady(function(){
     tb.add({
             text:'Button w/ Menu',
             iconCls: 'bmenu',  // <-- icon
-            menu: menu  // assign menu by instance
+            menu: menu,  // assign menu by instance
+            ariaRole: 'button', // Add ARIA role
+            ariaLabel: 'Button with menu' // Add ARIA label
         }, {
             text: 'Users',
             iconCls: 'user',
             menu: {
                 xtype: 'menu',
                 plain: true,
+                ariaRole: 'menu', // Add ARIA role
                 items: {
                     xtype: 'buttongroup',
                     title: 'User options',
@@ -114,23 +132,28 @@ Ext.onReady(function(){
                         xtype: 'button',
                         scale: 'large',
                         width: '100%',
-                        iconAlign: 'left'
+                        iconAlign: 'left',
+                        ariaRole: 'button' // Add ARIA role
                     },
                     items: [{
                         text: 'User<br/>manager',
-                        iconCls: 'edit'
+                        iconCls: 'edit',
+                        ariaLabel: 'User manager button' // Add ARIA label
                     },{
                         iconCls: 'add',
                         width: 'auto',
-                        tooltip: 'Add user'
+                        tooltip: 'Add user',
+                        ariaLabel: 'Add user button' // Add ARIA label
                     },{
                         colspan: 2,
                         text: 'Import',
-                        scale: 'small'
+                        scale: 'small',
+                        ariaLabel: 'Import button' // Add ARIA label
                     },{
                         colspan: 2,
                         text: 'Who is online?',
-                        scale: 'small'
+                        scale: 'small',
+                        ariaLabel: 'Who is online button' // Add ARIA label
                     }]
                 }
             }
@@ -140,97 +163,13 @@ Ext.onReady(function(){
             handler: onButtonClick,
             tooltip: {text:'This is a an example QuickTip for a toolbar item', title:'Tip Title'},
             iconCls: 'blist',
-            // Menus can be built/referenced by using nested menu config objects
-            menu : {
-                items: [{
-                    text: '<b>Bold</b>', handler: onItemClick
-                }, {
-                    text: '<i>Italic</i>', handler: onItemClick
-                }, {
-                    text: '<u>Underline</u>', handler: onItemClick
-                }, '-', {
-                    text: 'Pick a Color',
-                    handler: onItemClick,
-                    menu: {
-                        items: [
-                            new Ext.ColorPalette({
-                                listeners: {
-                                    select: function(cp, color){
-                                        Ext.example.msg('Color Selected', 'You chose {0}.', color);
-                                    }
-                                }
-                            }), '-',
-                            {
-                                text: 'More Colors...',
-                                handler: onItemClick
-                            }
-                        ]
-                    }
-                }, {
-                    text: 'Extellent!',
-                    handler: onItemClick
-                }]
-            }
-        }), '-', {
-        text: 'Toggle Me',
-        enableToggle: true,
-        toggleHandler: onItemToggle,
-        pressed: true
-    });
-
-    menu.addSeparator();
-    // Menus have a rich api for
-    // adding and removing elements dynamically
-    var item = menu.add({
-        text: 'Dynamically added Item'
-    });
-    // items support full Observable API
-    item.on('click', onItemClick);
-
-    // items can easily be looked up
-    menu.add({
-        text: 'Disabled Item',
-        id: 'disableMe'  // <-- Items can also have an id for easy lookup
-        // disabled: true   <-- allowed but for sake of example we use long way below
-    });
-    // access items by id or index
-    menu.items.get('disableMe').disable();
-
-    // They can also be referenced by id in or components
-    tb.add('-', {
-        icon: 'list-items.gif', // icons can also be specified inline
-        cls: 'x-btn-icon',
-        tooltip: '<b>Quick Tips</b><br/>Icon only button with tooltip'
-    }, '-');
-
-    var scrollMenu = new Ext.menu.Menu();
-    for (var i = 0; i < 50; ++i){
-        scrollMenu.add({
-            text: 'Item ' + (i + 1)
-        });
-    }
-    // scrollable menu
-    tb.add({
-        icon: 'preview.png',
-        cls: 'x-btn-text-icon',
-        text: 'Scrolling Menu',
-        menu: scrollMenu
-    });
-
-    // add a combobox to the toolbar
-    var combo = new Ext.form.ComboBox({
-        store: store,
-        displayField: 'state',
-        typeAhead: true,
-        mode: 'local',
-        triggerAction: 'all',
-        emptyText:'Select a state...',
-        selectOnFocus:true,
-        width:135
-    });
-    tb.addField(combo);
-
+            ariaRole: 'button', // Add ARIA role
+            ariaLabel: 'Split button' // Add ARIA label
+        })
+    
+    );
     tb.doLayout();
+    
 
     // functions to display feedback
     function onButtonClick(btn){

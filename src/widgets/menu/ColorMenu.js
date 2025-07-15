@@ -65,8 +65,9 @@
      * @type ColorPalette
      * The {@link Ext.ColorPalette} instance for this ColorMenu
      */
-    
-    
+
+    ariaLabel: 'Color picker menu',
+
     /**
      * @event click
      * @hide
@@ -77,29 +78,44 @@
      * @hide
      */
     
-    initComponent : function(){
+       initComponent: function () {
+        // Apply ARIA label to the menu root element
+        var paletteConfig = Ext.applyIf({
+            id: this.paletteId,
+            // Forward the menu's ARIA label to the palette for context
+            ariaLabel: this.ariaLabel ? this.ariaLabel + ' list' : 'Color choices'
+        }, this.initialConfig);
+
+        // Palette is accessible because we already fixed Ext.ColorPalette!
         Ext.apply(this, {
             plain: true,
             showSeparator: false,
-            items: this.palette = new Ext.ColorPalette(Ext.applyIf({
-                id: this.paletteId
-            }, this.initialConfig))
+            items: this.palette = new Ext.ColorPalette(paletteConfig)
         });
+
         this.palette.purgeListeners();
         Ext.menu.ColorMenu.superclass.initComponent.call(this);
-        /**
-         * @event select
-         * Fires when a color is selected from the {@link #palette Ext.ColorPalette}
-         * @param {Ext.ColorPalette} palette The {@link #palette Ext.ColorPalette}
-	     * @param {String} color The 6-digit color hex code (without the # symbol)
-         */
+
+        // Forward events and hide on select
         this.relayEvents(this.palette, ['select']);
         this.on('select', this.menuHide, this);
-        if(this.handler){
+
+        if (this.handler) {
             this.on('select', this.handler, this.scope || this);
         }
     },
 
+    onRender: function (ct, pos) {
+        Ext.menu.ColorMenu.superclass.onRender.call(this, ct, pos);
+
+        // Add role="menu" and aria-label to menu container for screen readers
+        if (this.el) {
+            this.el.dom.setAttribute('role', 'menu');
+            if (this.ariaLabel) {
+                this.el.dom.setAttribute('aria-label', this.ariaLabel);
+            }
+        }
+    },
     menuHide : function(){
         if(this.hideOnClick){
             this.hide(true);

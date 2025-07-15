@@ -318,11 +318,11 @@ Ext.Button = Ext.extend(Ext.BoxComponent, {
     onRender : function(ct, position){
         if(!this.template){
             if(!Ext.Button.buttonTemplate){
-                // hideous table template
+                // hideous table template (patched: removed role="presentation" from table and em)
                 Ext.Button.buttonTemplate = new Ext.Template(
-                    '<table id="{4}" cellspacing="0" class="x-btn {3}" role="presentation"><tbody class="{1}">',
+                    '<table id="{4}" cellspacing="0" class="x-btn {3}"><tbody class="{1}">',
                     '<tr><td class="x-btn-tl"><i role="presentation" aria-hidden="true">&#160;</i></td><td class="x-btn-tc"></td><td class="x-btn-tr"><i role="presentation" aria-hidden="true">&#160;</i></td></tr>',
-                    '<tr><td class="x-btn-ml"><i role="presentation" aria-hidden="true">&#160;</i></td><td class="x-btn-mc"><em class="{2}" unselectable="on" role="presentation"><button type="{0}"></button></em></td><td class="x-btn-mr"><i role="presentation" aria-hidden="true">&#160;</i></td></tr>',
+                    '<tr><td class="x-btn-ml"><i role="presentation" aria-hidden="true">&#160;</i></td><td class="x-btn-mc"><em class="{2}" unselectable="on"><button type="{0}"></button></em></td><td class="x-btn-mr"><i role="presentation" aria-hidden="true">&#160;</i></td></tr>',
                     '<tr><td class="x-btn-bl"><i role="presentation" aria-hidden="true">&#160;</i></td><td class="x-btn-bc"></td><td class="x-btn-br"><i role="presentation" aria-hidden="true">&#160;</i></td></tr>',
                     '</tbody></table>');
                 Ext.Button.buttonTemplate.compile();

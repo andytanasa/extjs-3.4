@@ -162,6 +162,12 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
         });
         fs.body.addClass('ux-mselect');
 
+        // Add accessibility attributes to the fieldset
+        if (fs.el) {
+            fs.el.dom.setAttribute('role', 'group');
+            fs.el.dom.setAttribute('aria-labelledby', fs.el.dom.id + '-legend');
+        }
+
         this.view = new Ext.ListView({
             selectedClass: 'ux-mselect-selected',
             multiSelect: true,
@@ -171,6 +177,19 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
         });
 
         fs.add(this.view);
+
+        // Add ARIA attributes to the list view
+        this.view.on('render', function() {
+            if (this.view.el) {
+                this.view.el.dom.setAttribute('role', 'listbox');
+                this.view.el.dom.setAttribute('aria-multiselectable', 'true');
+                this.view.el.dom.setAttribute('aria-label', this.fieldLabel || 'Multi-select list');
+                this.view.el.dom.setAttribute('tabindex', '0');
+                
+                // Add keyboard navigation
+                this.view.el.on('keydown', this.onViewKeyDown, this);
+            }
+        }, this);
 
         this.view.on('click', this.onViewClick, this);
         this.view.on('beforeclick', this.onViewBeforeClick, this);
@@ -209,6 +228,7 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
         this.hiddenField.dom.value = this.getValue();
         this.fireEvent('click', this, e);
         this.validate();
+        this.updateAriaSelected();
     },
 
     // private
@@ -221,6 +241,87 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
     // private
     onViewDblClick : function(vw, index, node, e) {
         return this.fireEvent('dblclick', vw, index, node, e);
+    },
+
+    // private
+    onViewKeyDown: function(e) {
+        var key = e.getKey();
+        var index = -1;
+        var selectedIndexes = this.view.getSelectedIndexes();
+        
+        if (selectedIndexes.length > 0) {
+            index = selectedIndexes[selectedIndexes.length - 1];
+        }
+        
+        switch(key) {
+            case e.UP:
+                e.preventDefault();
+                if (index > 0) {
+                    this.view.clearSelections();
+                    this.view.select(index - 1);
+                    this.updateAriaSelected();
+                }
+                break;
+            case e.DOWN:
+                e.preventDefault();
+                if (index < this.store.getCount() - 1) {
+                    this.view.clearSelections();
+                    this.view.select(index + 1);
+                    this.updateAriaSelected();
+                }
+                break;
+            case e.SPACE:
+            case e.ENTER:
+                e.preventDefault();
+                if (index >= 0) {
+                    var node = this.view.getNode(index);
+                    this.onViewClick(this.view, index, node, e);
+                }
+                break;
+            case e.HOME:
+                e.preventDefault();
+                this.view.clearSelections();
+                this.view.select(0);
+                this.updateAriaSelected();
+                break;
+            case e.END:
+                e.preventDefault();
+                this.view.clearSelections();
+                this.view.select(this.store.getCount() - 1);
+                this.updateAriaSelected();
+                break;
+        }
+    },
+
+    // private
+    updateAriaSelected: function() {
+        var nodes = this.view.getNodes();
+        var selectedIndexes = this.view.getSelectedIndexes();
+        
+        for (var i = 0; i < nodes.length; i++) {
+            var node = nodes[i];
+            var isSelected = selectedIndexes.indexOf(i) !== -1;
+            
+            node.setAttribute('role', 'option');
+            node.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+            node.setAttribute('tabindex', '-1');
+        }
+        
+        // Announce selection count to screen readers
+        var selectedCount = selectedIndexes.length;
+        var totalCount = this.store.getCount();
+        var announcement = selectedCount + ' of ' + totalCount + ' items selected';
+        
+        // Create or update live region for announcements
+        if (!this.liveRegion) {
+            this.liveRegion = Ext.DomHelper.append(document.body, {
+                tag: 'div',
+                'aria-live': 'polite',
+                'aria-atomic': 'true',
+                cls: 'sr-only'
+            });
+        }
+        this.liveRegion.innerHTML = announcement;
     },
 
     /**

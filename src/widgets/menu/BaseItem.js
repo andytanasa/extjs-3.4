@@ -35,27 +35,27 @@ Ext.menu.BaseItem = Ext.extend(Ext.Component, {
     /**
      * @cfg {Boolean} canActivate True if this item can be visually activated (defaults to false)
      */
-    canActivate : false,
+    canActivate: false,
     /**
      * @cfg {String} activeClass The CSS class to use when the item becomes activated (defaults to "x-menu-item-active")
      */
-    activeClass : "x-menu-item-active",
+    activeClass: "x-menu-item-active",
     /**
      * @cfg {Boolean} hideOnClick True to hide the containing menu after this item is clicked (defaults to true)
      */
-    hideOnClick : true,
+    hideOnClick: true,
     /**
      * @cfg {Number} clickHideDelay Length of time in milliseconds to wait before hiding after a click (defaults to 1)
      */
-    clickHideDelay : 1,
+    clickHideDelay: 1,
 
     // private
-    ctype : "Ext.menu.BaseItem",
+    ctype: "Ext.menu.BaseItem",
 
     // private
-    actionMode : "container",
+    actionMode: "container",
 
-    initComponent : function(){
+    initComponent: function () {
         Ext.menu.BaseItem.superclass.initComponent.call(this);
         this.addEvents(
             /**
@@ -78,19 +78,18 @@ Ext.menu.BaseItem = Ext.extend(Ext.Component, {
              */
             'deactivate'
         );
-        if(this.handler){
+        if (this.handler) {
             this.on("click", this.handler, this.scope);
         }
     },
 
     // private
-    onRender : function(container, position){
+    onRender: function (container, position) {
         Ext.menu.BaseItem.superclass.onRender.apply(this, arguments);
-        if(this.ownerCt && this.ownerCt instanceof Ext.menu.Menu){
+        if (this.ownerCt && this.ownerCt instanceof Ext.menu.Menu) {
             this.parentMenu = this.ownerCt;
-        }else{
-            // Accessibility: hide list-item wrapper
-            this.container.dom.setAttribute('role', 'presentation');
+        } else {
+            // Accessibility: do not set role="presentation"; let menu items inherit correct roles
             this.container.addClass('x-menu-list-item');
             this.mon(this.el, {
                 scope: this,
@@ -107,26 +106,26 @@ Ext.menu.BaseItem = Ext.extend(Ext.Component, {
      * @param {Function} handler The function that should be called on click
      * @param {Object} scope The scope (<code>this</code> reference) in which the handler function is executed. Defaults to this menu item.
      */
-    setHandler : function(handler, scope){
-        if(this.handler){
+    setHandler: function (handler, scope) {
+        if (this.handler) {
             this.un("click", this.handler, this.scope);
         }
         this.on("click", this.handler = handler, this.scope = scope);
     },
 
     // private
-    onClick : function(e){
-        if(!this.disabled && this.fireEvent("click", this, e) !== false
-                && (this.parentMenu && this.parentMenu.fireEvent("itemclick", this, e) !== false)){
+    onClick: function (e) {
+        if (!this.disabled && this.fireEvent("click", this, e) !== false
+            && (this.parentMenu && this.parentMenu.fireEvent("itemclick", this, e) !== false)) {
             this.handleClick(e);
-        }else{
+        } else {
             e.stopEvent();
         }
     },
 
     // private
-    activate : function(){
-        if(this.disabled){
+    activate: function () {
+        if (this.disabled) {
             return false;
         }
         var li = this.container;
@@ -137,37 +136,37 @@ Ext.menu.BaseItem = Ext.extend(Ext.Component, {
     },
 
     // private
-    deactivate : function(){
+    deactivate: function () {
         this.container.removeClass(this.activeClass);
         this.fireEvent("deactivate", this);
     },
 
     // private
-    shouldDeactivate : function(e){
+    shouldDeactivate: function (e) {
         return !this.region || !this.region.contains(e.getPoint());
     },
 
     // private
-    handleClick : function(e){
+    handleClick: function (e) {
         var pm = this.parentMenu;
-        if(this.hideOnClick){
-            if(pm.floating){
+        if (this.hideOnClick) {
+            if (pm.floating) {
                 this.clickHideDelayTimer = pm.hide.defer(this.clickHideDelay, pm, [true]);
-            }else{
+            } else {
                 pm.deactivateActive();
             }
         }
     },
-    
-    beforeDestroy: function(){
+
+    beforeDestroy: function () {
         clearTimeout(this.clickHideDelayTimer);
-        Ext.menu.BaseItem.superclass.beforeDestroy.call(this);    
+        Ext.menu.BaseItem.superclass.beforeDestroy.call(this);
     },
 
     // private. Do nothing
-    expandMenu : Ext.emptyFn,
+    expandMenu: Ext.emptyFn,
 
     // private. Do nothing
-    hideMenu : Ext.emptyFn
+    hideMenu: Ext.emptyFn
 });
 Ext.reg('menubaseitem', Ext.menu.BaseItem);

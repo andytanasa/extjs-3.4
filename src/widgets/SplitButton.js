@@ -59,12 +59,76 @@ Ext.SplitButton = Ext.extend(Ext.Button, {
     },
 
     // private
-    onRender : function(){
-        Ext.SplitButton.superclass.onRender.apply(this, arguments);
-        if(this.arrowTooltip){
-            this.el.child(this.arrowSelector).dom[this.tooltipType] = this.arrowTooltip;
-        }
-    },
+   onRender : function(){
+    Ext.SplitButton.superclass.onRender.apply(this, arguments);
+
+    // Make the main button and arrow split accessible
+    var btnEl = this.el.child('button'); // Main button element
+    var arrowEl = this.el.child(this.arrowSelector); // Arrow element (the <em>)
+
+    // 1. Main button ARIA
+    if (btnEl) {
+        btnEl.dom.setAttribute('role', 'button');
+        btnEl.dom.setAttribute('tabindex', '0');
+        btnEl.dom.setAttribute('aria-haspopup', this.menu ? 'true' : 'false');
+        btnEl.dom.setAttribute('aria-expanded', 'false');
+        btnEl.dom.setAttribute('aria-label', this.text || this.ariaLabel || 'Options');
+        btnEl.dom.addEventListener('focus', function(){ btnEl.addClass('x-btn-focused'); });
+        btnEl.dom.addEventListener('blur', function(){ btnEl.removeClass('x-btn-focused'); });
+    }
+
+    // 2. Arrow ARIA/label
+    if (arrowEl) {
+        arrowEl.dom.setAttribute('role', 'button');
+        arrowEl.dom.setAttribute('tabindex', '0');
+        // ARIA label for arrow (use tooltip, or fallback)
+        var arrowLabel = this.arrowTooltip || (this.text ? this.text + ' menu' : 'Open options menu');
+        arrowEl.dom.setAttribute('aria-label', arrowLabel);
+        arrowEl.dom.setAttribute('aria-haspopup', this.menu ? 'true' : 'false');
+        arrowEl.dom.setAttribute('aria-expanded', 'false');
+        arrowEl.dom.addEventListener('focus', function(){ arrowEl.addClass('x-btn-arrow-focused'); });
+        arrowEl.dom.addEventListener('blur', function(){ arrowEl.removeClass('x-btn-arrow-focused'); });
+    }
+
+    // 3. Keyboard events: open menu with Enter/Space/ArrowDown, focus management
+    var that = this;
+    if (btnEl) {
+        btnEl.dom.addEventListener('keydown', function(e){
+            if (e.key === 'Enter' || e.key === ' ') {
+                that.onClick(e, btnEl.dom);
+                e.preventDefault();
+            } else if (e.key === 'ArrowDown' && that.menu) {
+                that.showMenu();
+                e.preventDefault();
+            }
+        });
+    }
+    if (arrowEl) {
+        arrowEl.dom.addEventListener('keydown', function(e){
+            if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+                that.showMenu();
+                e.preventDefault();
+            }
+        });
+    }
+
+    // 4. When menu opens/closes, update aria-expanded for both main and arrow
+    if (this.menu) {
+        this.menu.on('show', function(){
+            if (btnEl) btnEl.dom.setAttribute('aria-expanded', 'true');
+            if (arrowEl) arrowEl.dom.setAttribute('aria-expanded', 'true');
+        });
+        this.menu.on('hide', function(){
+            if (btnEl) btnEl.dom.setAttribute('aria-expanded', 'false');
+            if (arrowEl) arrowEl.dom.setAttribute('aria-expanded', 'false');
+        });
+    }
+
+    // Existing arrow tooltip
+    if (this.arrowTooltip) {
+        arrowEl.dom[this.tooltipType] = this.arrowTooltip;
+    }
+},
 
     /**
      * Sets this button's arrow click handler.
